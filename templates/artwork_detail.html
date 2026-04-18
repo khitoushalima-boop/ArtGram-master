@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Artwork Detail - ArtGram</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Jost:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+  :root{
+    --cream:    #f5f0e8;
+    --parchment:#ede6d6;
+    --sand:     #d6c9b0;
+    --gold:     #b59a6a;
+    --brown:    #5a3e28;
+    --espresso: #2b1d12;
+    --ink:      #1a1410;
+    --mist:     #8a7d6e;
+    --white:    #fdfaf5;
+    --serif:    'Playfair Display', Georgia, serif;
+    --narrow:   'Cormorant Garamond', serif;
+    --sans:     'Jost', sans-serif;
+  }
+  body{
+    background:var(--cream);
+    color:var(--ink);
+    font-family:var(--sans);
+    padding: 100px 3rem;
+  }
+  nav{
+    position:fixed;
+    top:0;
+    left:0;
+    right:0;
+    z-index:100;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 3rem;
+    height:68px;
+    background:rgba(245,240,232,.92);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--sand);
+  }
+  .nav-logo{
+    font-family:var(--serif);
+    font-size:1.45rem;
+    font-weight:700;
+    color:var(--espresso);
+    text-decoration: none;
+  }
+  .nav-logo span{font-style:italic;color:var(--gold)}
+
+  .artwork-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .artwork-image img {
+    width: 100%;
+    border: 1px solid var(--sand);
+  }
+  .artwork-info h1 {
+    font-family: var(--serif);
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--espresso);
+  }
+  .artwork-artist {
+    font-family: var(--narrow);
+    font-style: italic;
+    font-size: 1.2rem;
+    color: var(--mist);
+    margin-bottom: 2rem;
+  }
+  .artwork-desc {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--brown);
+    margin-bottom: 2rem;
+  }
+  .btn-action {
+    padding: 0.7rem 1.5rem;
+    border: 1px solid var(--sand);
+    background: none;
+    font-family: var(--sans);
+    font-size: 0.8rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-action:hover {
+    background: var(--espresso);
+    color: var(--white);
+  }
+</style>
+</head>
+<body>
+  <nav>
+    <a href="index.html" class="nav-logo">Art<span>Gram</span></a>
+  </nav>
+
+  <div id="artwork-detail-container" class="artwork-container">
+    <p>Loading artwork details...</p>
+  </div>
+
+  <script>
+    const ARTWORKS_API = 'http://127.0.0.1:8002/api/artworks/';
+
+    async function fetchArtworkDetail() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const artworkId = urlParams.get('id');
+      const container = document.getElementById('artwork-detail-container');
+
+      if (!artworkId) {
+        container.innerHTML = '<p>Artwork not specified.</p>';
+        return;
+      }
+
+      try {
+        const response = await fetch(`${ARTWORKS_API}${artworkId}/`);
+        const artwork = await response.json();
+
+        container.innerHTML = `
+          <div class="artwork-image">
+            <img src="${artwork.image || 'https://via.placeholder.com/800x600'}" alt="${artwork.title}">
+          </div>
+          <div class="artwork-info">
+            <h1>${artwork.title}</h1>
+            <div class="artwork-artist">By ${artwork.user_username || 'Anonymous'}</div>
+            <div class="artwork-desc">
+              ${artwork.description || 'No description provided.'}
+            </div>
+            
+            <div style="display: flex; gap: 1rem;">
+              <button class="btn-action" id="like-btn">Like (${artwork.likes_count || 0})</button>
+              <button class="btn-action">Share</button>
+            </div>
+
+            <div style="margin-top: 3rem;">
+              <h3 style="font-family: var(--serif); margin-bottom: 1rem;">Comments</h3>
+              <div id="comments-list">
+                ${(artwork.comments || []).map(comment => `
+                  <div style="margin-bottom: 1rem; padding: 1rem; background: var(--white); border: 1px solid var(--sand);">
+                    <strong style="font-size: 0.9rem;">${comment.user_username}</strong>
+                    <p style="font-size: 0.9rem; margin-top: 0.3rem;">${comment.text}</p>
+                  </div>
+                `).join('')}
+                ${(!artwork.comments || artwork.comments.length === 0) ? '<p style="color: var(--mist); font-style: italic;">No comments yet.</p>' : ''}
+              </div>
+
+              <div id="comment-form-container" style="margin-top: 2rem;">
+                <!-- Will be shown if logged in -->
+              </div>
+            </div>
+          </div>
+        `;
+
+        // Check if logged in to show comment form
+        const token = localStorage.getItem('token');
+        if (token) {
+          document.getElementById('comment-form-container').innerHTML = `
+            <form id="comment-form">
+              <textarea name="text" placeholder="Add a comment..." required style="width: 100%; height: 80px; padding: 0.5rem; border: 1px solid var(--sand); background: var(--white); font-family: var(--sans); margin-bottom: 1rem;"></textarea>
+              <button type="submit" class="btn-action">Post Comment</button>
+            </form>
+          `;
+          
+          document.getElementById('comment-form').onsubmit = async (e) => {
+            e.preventDefault();
+            const text = e.target.text.value;
+            // Add comment API call logic here
+            alert('Comment feature coming soon!');
+          };
+        }
+
+      } catch (error) {
+        console.error('Error fetching artwork:', error);
+        container.innerHTML = '<p>Error loading artwork details.</p>';
+      }
+    }
+
+    fetchArtworkDetail();
+  </script>
+</body>
+</html>

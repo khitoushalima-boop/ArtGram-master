@@ -77,9 +77,20 @@
       margin-bottom: 2rem;
     }
 
+    .nav-logo {
+      font-family: var(--serif);
+      font-size: 1.45rem;
+      font-weight: 700;
+      letter-spacing: .04em;
+      color: var(--espresso);
+      text-decoration: none;
+    }
+    .nav-logo span { font-style: italic; color: var(--gold); }
+
     .nav-logo.auth-logo {
       font-size: 1.8rem;
       margin-bottom: 1.5rem;
+      display: block;
     }
 
     .auth-switcher {
@@ -248,464 +259,129 @@
       cursor: pointer;
       user-select: none;
     }
-
-    .checkbox-container input {
-      width: auto;
-      margin: 0;
-      accent-color: var(--gold);
-    }
-
-    .checkmark {
-      width: 16px;
-      height: 16px;
-      border: 1px solid var(--sand);
-      border-radius: 3px;
-      flex-shrink: 0;
-      margin-top: 1px;
-      position: relative;
-      background: var(--cream);
-    }
-
-    .checkmark::after {
-      content: '';
-      position: absolute;
-      left: 4px;
-      top: 1px;
-      width: 4px;
-      height: 8px;
-      border: solid var(--cream);
-      border-width: 0 2px 2px 0;
-      transform: rotate(45deg) scale(0);
-      transition: transform .2s;
-    }
-
-    .checkbox-container input:checked + .checkmark::after {
-      transform: rotate(45deg) scale(1);
-    }
-
-    .checkbox-container input:checked + .checkmark {
-      background: var(--gold);
-      border-color: var(--gold);
-    }
-
-    .checkbox-container a {
-      color: var(--gold);
-      text-decoration: underline;
-      font-weight: 500;
-    }
-
-    .auth-message {
-      padding: 1rem;
-      margin-top: 1rem;
-      border-radius: 8px;
-      font-size: .8rem;
-      text-align: center;
-      font-family: var(--narrow);
-      font-style: italic;
-      opacity: 0;
-      transform: translateY(10px);
-      transition: all .3s var(--ease);
-    }
-
-    .auth-message.show {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .auth-message.success {
-      background: rgba(181,154,106,.1);
-      color: var(--gold);
-      border: 1px solid var(--gold);
-    }
-
-    .auth-message.error {
-      background: rgba(91,62,40,.1);
-      color: var(--brown);
-      border: 1px solid var(--brown);
-    }
-
-    .auth-footer {
-      margin-top: 2rem;
-      text-align: center;
-      color: var(--mist);
-      font-family: var(--narrow);
-      font-size: .85rem;
-      font-style: italic;
-    }
-
-    /* ── RESPONSIVE ─────────────────────────────────────── */
-    @media (max-width: 480px) {
-      .auth-container {
-        padding: 1rem;
-      }
-      
-      .auth-card {
-        padding: 2rem 1.5rem;
-        margin: 1rem 0;
-      }
-      
-      .nav-logo.auth-logo {
-        font-size: 1.6rem;
-      }
-    }
   </style>
-    <!-- Google GIS SDK -->
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 <body>
-  <div class="auth-container">
-    <div class="auth-card">
-      <!-- Logo & Switcher -->
-      <div class="auth-header">
-        <div class="nav-logo auth-logo">Art<span>Gram</span></div>
-        <div class="auth-switcher">
-          <button class="auth-tab active" data-mode="login">Sign In</button>
-          <button class="auth-tab" data-mode="signup">Create Account</button>
+    <div class="auth-container">
+      <div class="auth-card">
+        <div class="auth-header">
+          <a href="index.html" class="nav-logo auth-logo">Art<span>Gram</span></a>
+          <div class="auth-switcher">
+            <button class="auth-tab active" data-target="login-form">Sign In</button>
+            <button class="auth-tab" data-target="signup-form">Join</button>
+          </div>
         </div>
-      </div>
 
-      <!-- Login Form -->
-      <form class="auth-form active" id="login-form">
-        <div class="form-group">
-          <label for="login-email">Email</label>
-          <input type="email" id="login-email" placeholder="your@email.com" required>
-        </div>
-        <div class="form-group">
-          <label for="login-password">Password</label>
-          <input type="password" id="login-password" placeholder="••••••••" required>
-        </div>
-        <a href="#" class="forgot-password" style="font-size:.75rem;color:var(--gold);text-align:right;display:block;margin-bottom:1rem;">Forgot Password?</a>
-        <button type="submit" class="auth-submit">Sign In</button>
-        <div class="auth-divider">
-          <span>or</span>
-        </div>
-        <button type="button" class="auth-social google">
-          <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
-            <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-            <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23.99-3.71.99-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-            <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
-            <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
-          </svg>
-          Continue with Google
-        </button>
-      </form>
+        <!-- Login Form -->
+        <form id="login-form" class="auth-form active">
+          <div class="form-group">
+            <label for="login-username">Username</label>
+            <input type="text" id="login-username" name="username" required>
+          </div>
+          <div class="form-group">
+            <label for="login-password">Password</label>
+            <input type="password" id="login-password" name="password" required>
+          </div>
+          <button type="submit" class="auth-submit">Enter Gallery</button>
+          <div class="auth-divider">or continue with</div>
+          <button type="button" class="auth-social google">
+            <svg viewBox="0 0 24 24" width="18" height="18"><path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.66l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+            Google
+          </button>
+        </form>
 
-      <!-- Signup Form -->
-      <form class="auth-form" id="signup-form">
-        <div class="form-group">
-          <label for="signup-email">Email</label>
-          <input type="email" id="signup-email" placeholder="your@email.com" required>
-        </div>
-        <div class="form-group">
-          <label for="signup-username">Username</label>
-          <input type="text" id="signup-username" placeholder="@username" required>
-        </div>
-        <div class="form-group">
-          <label for="signup-avatar">Profile Picture (optional)</label>
-          <input type="file" id="signup-avatar" accept="image/*" style="font-size: 0.85rem; color: var(--mist);">
-        </div>
-        <div class="form-group">
-          <label for="signup-password">Password</label>
-          <input type="password" id="signup-password" placeholder="••••••••" required minlength="8">
-        </div>
-        <div class="form-group">
-          <label for="signup-confirm">Confirm Password</label>
-          <input type="password" id="signup-confirm" placeholder="••••••••" required minlength="8">
-        </div>
-        <button type="submit" class="auth-submit">Create Account</button>
-        <div class="auth-divider">
-          <span>or</span>
-        </div>
-        <button type="button" class="auth-social google">
-          <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
-            <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-            <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23.99-3.71.99-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-            <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
-            <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
-          </svg>
-          Continue with Google
-        </button>
+        <!-- Signup Form -->
+        <form id="signup-form" class="auth-form">
+          <div class="form-group">
+            <label for="signup-username">Username</label>
+            <input type="text" id="signup-username" name="username" required>
+          </div>
+          <div class="form-group">
+            <label for="signup-email">Email</label>
+            <input type="email" id="signup-email" name="email" required>
+          </div>
+          <div class="form-group">
+            <label for="signup-password">Password</label>
+            <input type="password" id="signup-password" name="password" required>
+          </div>
+          <button type="submit" class="auth-submit">Create Account</button>
+        </form>
+
         <div class="auth-terms">
           <label class="checkbox-container">
-            <input type="checkbox" required>
-            <span class="checkmark"></span>
-            I agree to the <a href="#" target="_blank">Terms of Service</a> and <a href="#" target="_blank">Privacy Policy</a>
+            <input type="checkbox" checked>
+            <span>I agree to the <u>Terms of Service</u> and <u>Privacy Policy</u>.</span>
           </label>
         </div>
-      </form>
-
-      <!-- Success/Error Messages -->
-      <div class="auth-message" id="auth-message"></div>
+      </div>
     </div>
-    
-    <div class="auth-footer">
-      <p>ArtGram — Where <em>art</em> finds its audience</p>
-    </div>
-  </div>
 
-  <script>
-      /* ── TRUSTED TYPES FIX ────────────────────────── */
-      if (window.trustedTypes && window.trustedTypes.createPolicy) {
-        window.trustedTypes.createPolicy('default', {
-          createHTML: (string) => string,
-        });
-      }
+    <script>
+      const USER_API = 'http://127.0.0.1:8000/api/users/';
 
-      /* ── AUTH FUNCTIONALITY ──────────────────────────────── */
-    document.addEventListener('DOMContentLoaded', function() {
-      const authTabs = document.querySelectorAll('.auth-tab');
-      const authForms = document.querySelectorAll('.auth-form');
-      const authMessage = document.getElementById('auth-message');
-      
-      // Tab switching
-      authTabs.forEach(tab => {
+      // Switch between Login and Signup
+      const tabs = document.querySelectorAll('.auth-tab');
+      const forms = document.querySelectorAll('.auth-form');
+
+      tabs.forEach(tab => {
         tab.addEventListener('click', () => {
-          const mode = tab.dataset.mode;
-          
-          // Update active tab
-          authTabs.forEach(t => t.classList.remove('active'));
+          const target = tab.getAttribute('data-target');
+          tabs.forEach(t => t.classList.remove('active'));
+          forms.forEach(f => f.classList.remove('active'));
           tab.classList.add('active');
-          
-          // Switch forms
-          authForms.forEach(form => form.classList.remove('active'));
-          document.getElementById(mode + '-form').classList.add('active');
-          
-          // Clear message
-          if (authMessage) {
-            authMessage.classList.remove('show', 'success', 'error');
-            authMessage.textContent = '';
-          }
+          document.getElementById(target).classList.add('active');
         });
       });
-      
-      // Form submissions
-      document.getElementById('login-form').addEventListener('submit', async (e) => {
+
+      // Handle Login
+      document.getElementById('login-form').onsubmit = async (e) => {
         e.preventDefault();
-        const email = document.getElementById('login-email').value;
-        const password = document.getElementById('login-password').value;
+        const formData = new FormData(e.target);
+        const data = Object.fromEntries(formData.entries());
 
         try {
-          const response = await fetch('http://localhost:8000/api/users/login/', { 
+          const response = await fetch(`${USER_API}login/`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, password })
+            body: JSON.stringify(data)
           });
-
+          
           if (response.ok) {
-            const data = await response.json();
-            localStorage.setItem('token', data.access);
-            localStorage.setItem('refreshToken', data.refresh);
-            // Store user data from API response
-            localStorage.setItem('username', data.user.username);
-            localStorage.setItem('email', data.user.email);
-            localStorage.setItem('userId', data.user.id);
-            showAuthMessage('Welcome back to ArtGram! Redirecting...', 'success');
-            setTimeout(() => { window.location.href = '/index.html'; }, 1500);
+            const result = await response.json();
+            localStorage.setItem('token', result.access);
+            localStorage.setItem('user', JSON.stringify(result.user));
+            window.location.href = 'index.html';
           } else {
-            showAuthMessage('Invalid email or password.', 'error');
+            alert('Login failed. Please check your credentials.');
           }
         } catch (error) {
-          showAuthMessage('Connection error. Please try again.', 'error');
+          console.error('Login error:', error);
         }
-      });
-      
-      document.getElementById('signup-form').addEventListener('submit', async (e) => {
+      };
+
+      // Handle Signup
+      document.getElementById('signup-form').onsubmit = async (e) => {
         e.preventDefault();
-        console.log('Signup form submitted');
-        const email = document.getElementById('signup-email').value;
-        const username = document.getElementById('signup-username').value;
-        const password = document.getElementById('signup-password').value.trim();
-        const confirm = document.getElementById('signup-confirm').value.trim();
-        const avatarFile = document.getElementById('signup-avatar').files[0];
-        
-        console.log('Validating passwords...');
-        if (password !== confirm) {
-          console.warn('Password mismatch');
-          showAuthMessage('Passwords do not match. Please try again.', 'error');
-          return;
-        }
+        const formData = new FormData(e.target);
+        const data = Object.fromEntries(formData.entries());
 
         try {
-          showAuthMessage('Creating account...', 'success');
-          
-          // Use FormData for file upload
-          const formData = new FormData();
-          formData.append('email', email);
-          formData.append('username', username);
-          formData.append('password', password);
-          if (avatarFile) {
-            formData.append('avatar', avatarFile);
-          }
-          
-          const response = await fetch('http://localhost:8000/api/users/register/', {
+          const response = await fetch(`${USER_API}register/`, {
             method: 'POST',
-            body: formData
-            // Don't set Content-Type header - let browser set it with boundary
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
           });
-
-          const data = await response.json();
-          console.log('Signup response:', response.status, data);
-
+          
           if (response.ok) {
-            showAuthMessage('Account created successfully! Please sign in.', 'success');
-            // We don't store token here, just redirect to login tab
-            setTimeout(() => { 
-              // Switch to login tab
-              document.querySelector('[data-mode="login"]').click();
-            }, 2000);
+            alert('Registration successful! Please login.');
+            window.location.reload();
           } else {
-            // Handle DRF dictionary errors
-            let errorMsg = 'Signup failed. ';
-            if (typeof data === 'object') {
-              for (const key in data) {
-                errorMsg += `${key}: ${data[key]} `;
-              }
-            } else {
-              errorMsg += data.detail || '';
-            }
-            showAuthMessage(errorMsg, 'error');
+            alert('Registration failed.');
           }
         } catch (error) {
           console.error('Signup error:', error);
-          showAuthMessage('Connection error. Please check if the service is running.', 'error');
-        }
-      });
-      
-      // Google auth handling
-      window.handleGoogleSignIn = async (response) => {
-        if (!response || !response.credential) {
-          showAuthMessage('Google Sign-In was cancelled. Please try again.', 'error');
-          return;
-        }
-        
-        showAuthMessage('Connecting to Google...', 'success');
-        
-        try {
-          const res = await fetch('http://localhost:8000/api/users/google/callback/', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ 
-              token: response.credential
-            })
-          });
-
-          if (res.ok) {
-            const data = await res.json();
-            localStorage.setItem('token', data.access);
-            localStorage.setItem('refreshToken', data.refresh);
-            localStorage.setItem('username', data.user.username);
-            localStorage.setItem('email', data.user.email);
-            localStorage.setItem('userId', data.user.id);
-            showAuthMessage(`Success! Logged in as ${data.user.email}`, 'success');
-            setTimeout(() => { window.location.href = '/index.html'; }, 1500);
-          } else {
-            const errorData = await res.json();
-            showAuthMessage(errorData.error || 'Google login failed. Please try again.', 'error');
-          }
-        } catch (error) {
-          console.error('Google Auth Error:', error);
-          showAuthMessage('Connection error. Please check if the service is running.', 'error');
         }
       };
-
-      // Google auth initialization
-      let isGooglePrompting = false;
-      let googleRetryCount = 0;
-      
-      function initGoogleAuth() {
-        if (typeof google !== 'undefined' && google.accounts && google.accounts.id) {
-          google.accounts.id.initialize({
-            client_id: "your-google-client-id.apps.googleusercontent.com", // Replace with your Google Client ID
-            callback: window.handleGoogleSignIn,
-            auto_select: false,
-            itp_support: true,
-            cancel_on_tap_outside: false,
-            prompt_parent_id: 'google-signin-button'
-          });
-          console.log('Google SDK initialized');
-          
-          // Render Google Sign-In button
-          google.accounts.id.renderButton(document.getElementById('google-signin-button'), {
-            theme: 'outline',
-            size: 'large',
-            text: 'signin_with',
-            shape: 'rectangular'
-          });
-          
-        } else if (googleRetryCount < 50) { // Retry for up to 5 seconds
-          googleRetryCount++;
-          setTimeout(initGoogleAuth, 100);
-        } else {
-          console.error('Google SDK failed to load after 5 seconds');
-          showAuthMessage('Google Sign-In is currently unavailable. Please use email registration.', 'error');
-        }
-      }
-
-      // Add error listener for Google Sign-In
-      window.onGoogleLibraryLoad = () => {
-        console.log('Google library loaded successfully');
-        googleRetryCount = 0;
-      };
-
-      // Add error handling for Google Sign-In
-      window.handleGoogleError = (error) => {
-        console.error('Google Sign-In error:', error);
-        if (error.error === 'popup_closed_by_user') {
-          showAuthMessage('Google Sign-In was cancelled. Please try again.', 'error');
-        } else if (error.error === 'access_denied') {
-          showAuthMessage('Access denied. Please try again.', 'error');
-        } else {
-          showAuthMessage('Google Sign-In failed. Please try again.', 'error');
-        }
-      };
-
-      initGoogleAuth();
-
-      document.querySelectorAll('.auth-social.google').forEach(btn => {
-        btn.addEventListener('click', async (e) => {
-          e.preventDefault();
-          if (isGooglePrompting) return;
-          
-          isGooglePrompting = true;
-          showAuthMessage('Opening Google Sign-In...', 'success');
-          
-          google.accounts.id.prompt((notification) => {
-            if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
-              console.warn('Google Prompt skipped or not displayed:', notification.getNotDisplayedReason());
-              isGooglePrompting = false;
-              // If One Tap is blocked/skipped, we can try to render the button or show a message
-              showAuthMessage('Google Sign-In prompt was closed. Please try again.', 'error');
-            }
-          });
-          
-          // Reset the flag after some time to allow retries
-          setTimeout(() => { isGooglePrompting = false; }, 3000);
-        });
-      });
-      
-      function showAuthMessage(text, type) {
-        if (authMessage) {
-          authMessage.textContent = text;
-          authMessage.className = `auth-message ${type} show`;
-          
-          // Auto-hide after 5s
-          setTimeout(() => {
-            authMessage.classList.remove('show');
-          }, 5000);
-        }
-      }
-      
-      // Input focus animations
-      document.querySelectorAll('.form-group input').forEach(input => {
-        input.addEventListener('focus', function() {
-          this.parentElement.style.transform = 'translateY(-2px)';
-        });
-        
-        input.addEventListener('blur', function() {
-          this.parentElement.style.transform = 'translateY(0)';
-        });
-      });
-    });
-  </script>
+    </script>
 </body>
 </html>

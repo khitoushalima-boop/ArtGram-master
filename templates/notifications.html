@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Notifications - ArtGram</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Jost:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+  :root{
+    --cream:    #f5f0e8;
+    --parchment:#ede6d6;
+    --sand:     #d6c9b0;
+    --gold:     #b59a6a;
+    --brown:    #5a3e28;
+    --espresso: #2b1d12;
+    --ink:      #1a1410;
+    --mist:     #8a7d6e;
+    --white:    #fdfaf5;
+    --serif:    'Playfair Display', Georgia, serif;
+    --narrow:   'Cormorant Garamond', serif;
+    --sans:     'Jost', sans-serif;
+  }
+  body{
+    background:var(--cream);
+    color:var(--ink);
+    font-family:var(--sans);
+    padding: 100px 3rem;
+  }
+  nav{
+    position:fixed;
+    top:0;
+    left:0;
+    right:0;
+    z-index:100;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 3rem;
+    height:68px;
+    background:rgba(245,240,232,.92);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--sand);
+  }
+  .nav-logo{
+    font-family:var(--serif);
+    font-size:1.45rem;
+    font-weight:700;
+    color:var(--espresso);
+    text-decoration: none;
+  }
+  .nav-logo span{font-style:italic;color:var(--gold)}
+
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  .notification-item {
+    background: var(--white);
+    border: 1px solid var(--sand);
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.3s ease;
+  }
+  .notification-text {
+    font-size: 0.95rem;
+    color: var(--espresso);
+  }
+  .notification-text strong {
+    color: var(--gold);
+  }
+  .notification-time {
+    font-size: 0.8rem;
+    color: var(--mist);
+    margin-top: 0.3rem;
+  }
+  .btn-mark-read {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    color: var(--gold);
+    border: 1px solid var(--gold);
+    padding: 0.4rem 0.8rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: none;
+  }
+  .btn-mark-read:hover {
+    background: var(--gold);
+    color: var(--white);
+  }
+  .is-read {
+    opacity: 0.6;
+    background: var(--parchment);
+  }
+  .empty-msg {
+    color: var(--mist);
+    font-style: italic;
+    text-align: center;
+    padding: 2rem;
+  }
+</style>
+</head>
+<body>
+  <nav>
+    <a href="index.html" class="nav-logo">Art<span>Gram</span></a>
+  </nav>
+
+  <div class="container">
+    <h1 style="font-family: var(--serif); margin-bottom: 2rem; color: var(--espresso);">Your Notifications</h1>
+    
+    <div id="notifications-list">
+      <!-- Loading state -->
+      <p class="empty-msg">Loading notifications...</p>
+    </div>
+  </div>
+
+  <script>
+    const NOTIFICATIONS_API = 'http://127.0.0.1:8004/api/notifications/notifications/';
+    const token = localStorage.getItem('token');
+
+    // Time since helper
+    function timeSince(date) {
+      const seconds = Math.floor((new Date() - new Date(date)) / 1000);
+      let interval = seconds / 31536000;
+      if (interval > 1) return Math.floor(interval) + " years";
+      interval = seconds / 2592000;
+      if (interval > 1) return Math.floor(interval) + " months";
+      interval = seconds / 86400;
+      if (interval > 1) return Math.floor(interval) + " days";
+      interval = seconds / 3600;
+      if (interval > 1) return Math.floor(interval) + " hours";
+      interval = seconds / 60;
+      if (interval > 1) return Math.floor(interval) + " minutes";
+      return Math.floor(seconds) + " seconds";
+    }
+
+    async function fetchNotifications() {
+      const list = document.getElementById('notifications-list');
+      
+      if (!token) {
+        list.innerHTML = '<p class="empty-msg">Please <a href="log.html" style="color: var(--gold); text-decoration: underline;">login</a> to view notifications.</p>';
+        return;
+      }
+
+      try {
+        const response = await fetch(NOTIFICATIONS_API, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        
+        if (!response.ok) throw new Error('Failed to fetch');
+        
+        const notifications = await response.json();
+
+        if (notifications.length === 0) {
+          list.innerHTML = '<p class="empty-msg">No notifications yet.</p>';
+          return;
+        }
+
+        list.innerHTML = notifications.map(n => {
+          let actionText = '';
+          if (n.notification_type === 'like') {
+            actionText = `liked your artwork <strong>${n.artwork_title || 'Untitled'}</strong>.`;
+          } else if (n.notification_type === 'comment') {
+            actionText = `commented on your artwork <strong>${n.artwork_title || 'Untitled'}</strong>.`;
+          } else if (n.notification_type === 'follow') {
+            actionText = `started following you.`;
+          }
+
+          return `
+            <div class="notification-item ${n.is_read ? 'is-read' : ''}" id="notif-${n.id}">
+              <div>
+                <div class="notification-text">
+                  <strong>${n.sender_username}</strong> ${actionText}
+                </div>
+                <div class="notification-time">${timeSince(n.created_at)} ago</div>
+              </div>
+              ${!n.is_read ? `
+                <button onclick="markAsRead(${n.id})" class="btn-mark-read">Mark as Read</button>
+              ` : ''}
+            </div>
+          `;
+        }).join('');
+
+      } catch (error) {
+        console.error('Error:', error);
+        list.innerHTML = '<p class="empty-msg">Error loading notifications. Please try again later.</p>';
+      }
+    }
+
+    async function markAsRead(id) {
+      try {
+        const response = await fetch(`${NOTIFICATIONS_API}${id}/mark_as_read/`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        });
+
+        if (response.ok) {
+          const item = document.getElementById(`notif-${id}`);
+          item.classList.add('is-read');
+          const btn = item.querySelector('.btn-mark-read');
+          if (btn) btn.remove();
+        }
+      } catch (error) {
+        console.error('Error marking as read:', error);
+      }
+    }
+
+    // Initialize
+    fetchNotifications();
+  </script>
+</body>
+</html>

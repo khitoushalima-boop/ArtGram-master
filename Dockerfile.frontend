@@ -1,0 +1,14 @@
+# Use Nginx to serve static files
+FROM nginx:alpine
+
+# Copy all templates to the default Nginx public folder
+COPY ./templates /usr/share/nginx/html
+
+# Copy any static files if they exist
+# COPY ./static /usr/share/nginx/html/static
+
+# Expose port 80
+EXPOSE 80
+
+# Start Nginx
+CMD ["nginx", "-g", "daemon off;"]

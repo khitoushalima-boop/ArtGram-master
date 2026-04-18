@@ -67,17 +67,12 @@ WSGI_APPLICATION = 'core.wsgi.application'
 
 CORS_ALLOW_ALL_ORIGINS = True
 
-if env:
-    DATABASES = {
-        'default': env.db('DATABASE_URL', default='postgres://user:password@db_notification:5432/notification_db')
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
-    }
+}
 
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
