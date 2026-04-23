@@ -34,7 +34,7 @@ class RegisterSerializer(serializers.ModelSerializer):
             'avatar': user.avatar.url if user.avatar else None,
             'is_social': False
         }
-        publish_user_event(user.id, 'User_Created', user_data)
+        publish_user_event('User_Created', user_data)
         
         return user
 

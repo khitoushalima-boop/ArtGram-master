@@ -1,4 +1,5 @@
 from django.apps import AppConfig
+import os
 
 
 class AccountsConfig(AppConfig):
@@ -7,3 +8,39 @@ class AccountsConfig(AppConfig):
     
     def ready(self):
         import accounts.signals
+        
+        # Register service with Consul
+        try:
+            from consul_utils import register_django_service
+            from django.conf import settings
+            
+            # Get service configuration
+            service_name = getattr(settings, 'SERVICE_NAME', 'user-service')
+            service_port = int(os.environ.get('SERVICE_PORT', '8000'))
+            health_check_url = f"http://127.0.0.1:{service_port}/health/"
+            
+            # Service tags for discovery
+            tags = [
+                'django',
+                'microservice',
+                'api',
+                'artgram',
+                'authentication',
+                os.environ.get('ENVIRONMENT', 'development')
+            ]
+            
+            # Register with Consul
+            success = register_django_service(
+                service_name=service_name,
+                service_port=service_port,
+                health_check_url=health_check_url,
+                tags=tags
+            )
+            
+            if success:
+                print(f"✅ {service_name} registered with Consul")
+            else:
+                print(f"❌ Failed to register {service_name} with Consul")
+                
+        except Exception as e:
+            print(f"❌ Error registering service with Consul: {str(e)}")

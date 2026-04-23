@@ -71,6 +71,11 @@ services:
       - DEBUG=True
       - GOOGLE_CLIENT_ID=985300164541-aneiq6of2u1tdfefll3hiaa59sasdkn5.apps.googleusercontent.com
       - GOOGLE_CLIENT_SECRET=GOCSPX-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+      - SERVICE_NAME=user-service
+      - SERVICE_PORT=8000
+      - CONSUL_HOST=consul
+      - CONSUL_PORT=8500
+      - ENVIRONMENT=development
     volumes:
       - ./services/user_service:/app
     depends_on:
@@ -79,6 +84,11 @@ services:
       - consul
     ports:
       - "8000:8000"
+    labels:
+      - "artgram.service=user-service"
+      - "artgram.version=1.0.0"
+      - "artgram.environment=development"
+      - "consul.service.enable=true"
 
   artwork-service:
     build: ./services/artwork_service
@@ -86,6 +96,11 @@ services:
       - DATABASE_URL=postgres://user:password@db_artwork:5432/artwork_db
       - RABBITMQ_URL=amqp://guest:guest@rabbitmq:5672/
       - DEBUG=True
+      - SERVICE_NAME=artwork-service
+      - SERVICE_PORT=8002
+      - CONSUL_HOST=consul
+      - CONSUL_PORT=8500
+      - ENVIRONMENT=development
     volumes:
       - ./services/artwork_service:/app
       - artwork_media:/app/media
@@ -95,6 +110,11 @@ services:
       - consul
     ports:
       - "8002:8000"
+    labels:
+      - "artgram.service=artwork-service"
+      - "artgram.version=1.0.0"
+      - "artgram.environment=development"
+      - "consul.service.enable=true"
 
   interaction-service:
     build: ./services/interaction_service
