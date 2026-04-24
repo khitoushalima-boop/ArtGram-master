@@ -508,3 +508,5 @@ WARNING 2026-04-24 16:51:08,164 log 6 132760568087296 Not Found: /api/users/prof
 WARNING 2026-04-24 16:51:12,399 log 6 132760568087296 Not Found: /api/users/profile/marwa-artist/
 WARNING 2026-04-24 16:51:13,350 log 6 132760568087296 Not Found: /api/users/profile/marwa-artist/
 WARNING 2026-04-24 16:51:13,895 log 6 132760568087296 Not Found: /api/users/profile/marwa-artist/
+WARNING 2026-04-24 17:14:56,255 log 6 132760568087296 Not Found: /api/users/profile/marwa-artist/
+WARNING 2026-04-24 17:15:05,176 log 6 132760568087296 Not Found: /api/users/profile/nonexistent-user/
