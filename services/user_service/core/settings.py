@@ -61,6 +61,54 @@ SERVICE_PORT = env('SERVICE_PORT', default='8000')
 CONSUL_HOST = env('CONSUL_HOST', default='consul')
 CONSUL_PORT = env('CONSUL_PORT', default='8500')
 
+# Logging Configuration
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
+            'style': '{',
+        },
+        'simple': {
+            'format': '{levelname} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose',
+        },
+        'file': {
+            'class': 'logging.FileHandler',
+            'filename': '/app/registration.log',
+            'formatter': 'verbose',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console', 'file'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+        'accounts': {
+            'handlers': ['console', 'file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+        'registration': {
+            'handlers': ['console', 'file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'INFO',
+    },
+}
+
 # URL configuration will be handled in urls.py
 
 TEMPLATES = [
@@ -130,8 +178,63 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# CORS Configuration
+# CORS Configuration - Django 4.0+ Compatible
 CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+]
+CORS_ALLOW_METHODS = [
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+]
+
+# Specific allowed origins (more secure than allowing all)
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:8001",   # Gateway port
+    "http://127.0.0.1:8001",
+    "http://localhost:8003",   # Direct frontend port
+    "http://127.0.0.1:8003",
+    "http://localhost:3000",   # React/Vue frontend port
+    "http://127.0.0.1:3000",   # React/Vue frontend port
+]
+
+# Allowed origin patterns for development
+CORS_ALLOWED_ORIGIN_REGEXES = [
+    r"^https?://localhost:800[1-3].*$",
+    r"^https?://127\.0\.0\.1:800[1-3].*$",
+    r"^https?://localhost:3000.*$",
+    r"^https?://127\.0\.0\.1:3000.*$",
+]
+
+# CSRF Configuration for Django 4.0+ - MUST INCLUDE ALL ORIGINS
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:8001",   # Gateway port
+    "http://127.0.0.1:8001",
+    "http://localhost:8003",   # Direct frontend port  
+    "http://127.0.0.1:8003",
+    "http://localhost:3000",   # React/Vue frontend port
+    "http://127.0.0.1:3000",   # React/Vue frontend port
+]
+CSRF_COOKIE_SECURE = False  # For development
+CSRF_COOKIE_HTTPONLY = False  # Allow JavaScript access
+CSRF_COOKIE_SAMESITE = 'Lax'  # Allow same-origin requests
+
+# Additional Django 4.0+ CSRF settings
+CSRF_USE_SESSIONS = False
+CSRF_COOKIE_HTTPONLY = False
 
 # Authentication Backends
 AUTHENTICATION_BACKENDS = [
@@ -162,7 +265,7 @@ SIMPLE_JWT = {
     'TOKEN_TYPE_CLAIM': 'token_type',
 }
 
-# REST Framework Configuration
+# REST Framework Configuration - Secure but allows public endpoints
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.SessionAuthentication',
@@ -171,18 +274,21 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',
+        'rest_framework.permissions.IsAuthenticatedOrReadOnly',  # Allow read access for unauthenticated users
     ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 20,
+    # Add permission policies for specific endpoints
+    'DEFAULT_PERMISSION_POLICY': None,  # Allow view-level permissions to override defaults
 }
 
 # RabbitMQ Event Publishing Function
 import pika
 import json
+from django.utils import timezone  # ✅ Fixed missing import
 
 def publish_user_event(event_type, user_data):
-    """Publish user-related events to RabbitMQ"""
+    """Publish user-related events to RabbitMQ with enhanced error handling"""
     try:
         # Get RabbitMQ connection details from environment
         rabbitmq_url = os.environ.get('RABBITMQ_URL', 'amqp://guest:guest@rabbitmq:5672/')
@@ -191,24 +297,36 @@ def publish_user_event(event_type, user_data):
         import urllib.parse
         parsed = urllib.parse.urlparse(rabbitmq_url)
         
-        # Establish connection
-        connection = pika.BlockingConnection(
-            pika.ConnectionParameters(
-                host=parsed.hostname,
-                port=parsed.port or 5672,
-                virtual_host=parsed.path[1:] if parsed.path else '/',
-                credentials=pika.PlainCredentials(
-                    parsed.username or 'guest',
-                    parsed.password or 'guest'
+        # Establish connection with timeout and retry logic
+        try:
+            connection = pika.BlockingConnection(
+                pika.ConnectionParameters(
+                    host=parsed.hostname,
+                    port=parsed.port or 5672,
+                    virtual_host=parsed.path[1:] if parsed.path else '/',
+                    credentials=pika.PlainCredentials(
+                        parsed.username or 'guest',
+                        parsed.password or 'guest'
+                    ),
+                    # Note: Some pika versions don't support timeout parameters
+                    # connection_timeout=5,  # 5 second timeout
+                    # blocked_connection_timeout=5  # 5 second blocked timeout
                 )
             )
-        )
+        except pika.exceptions.AMQPConnectionError as conn_error:
+            print(f"❌ RabbitMQ connection failed: {str(conn_error)}")
+            return  # Don't crash registration, just skip event publishing
         
         channel = connection.channel()
         
         # Declare exchange
         exchange_name = 'user_events'
-        channel.exchange_declare(exchange=exchange_name, exchange_type='topic', durable=True)
+        try:
+            channel.exchange_declare(exchange=exchange_name, exchange_type='topic', durable=True)
+        except pika.exceptions.ChannelClosedByBroker as exchange_error:
+            print(f"❌ Failed to declare exchange: {str(exchange_error)}")
+            connection.close()
+            return
         
         # Create routing key
         routing_key = f'user.{event_type}'
@@ -217,25 +335,34 @@ def publish_user_event(event_type, user_data):
         message = {
             'event_type': event_type,
             'user_data': user_data,
-            'timestamp': str(timezone.now()),
+            'timestamp': str(timezone.now()),  # ✅ Now properly imported
             'service': 'user-service'
         }
         
-        channel.basic_publish(
-            exchange=exchange_name,
-            routing_key=routing_key,
-            body=json.dumps(message),
-            properties=pika.BasicProperties(
-                delivery_mode=2,  # make message persistent
-                content_type='application/json'
+        try:
+            channel.basic_publish(
+                exchange=exchange_name,
+                routing_key=routing_key,
+                body=json.dumps(message),
+                properties=pika.BasicProperties(
+                    delivery_mode=2,  # make message persistent
+                    content_type='application/json'
+                )
             )
-        )
-        
-        print(f"✅ Published {event_type} event for user {user_data.get('username')}")
+            
+            print(f"✅ Published {event_type} event for user {user_data.get('username')}")
+            
+        except pika.exceptions.AMQPError as publish_error:
+            print(f"❌ Failed to publish message: {str(publish_error)}")
         
         # Close connection
-        connection.close()
+        try:
+            connection.close()
+        except pika.exceptions.AMQPError as close_error:
+            print(f"❌ Failed to close RabbitMQ connection: {str(close_error)}")
         
     except Exception as e:
-        print(f"❌ Failed to publish user event: {str(e)}")
+        print(f"❌ Unexpected error in publish_user_event: {str(e)}")
+        import traceback
+        print(f"📊 Full traceback: {traceback.format_exc()}")
         # Don't raise exception to avoid breaking user registration

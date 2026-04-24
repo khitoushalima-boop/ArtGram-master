@@ -1,11 +1,21 @@
-from rest_framework import permissions, status, viewsets, generics, serializers
+from rest_framework import viewsets, generics, permissions, status, serializers
 from rest_framework.decorators import api_view, permission_classes, action
 from rest_framework.response import Response
+from rest_framework.exceptions import NotFound
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework_simplejwt.authentication import JWTAuthentication
 from django.conf import settings
 from django.utils import timezone
+from django.http import JsonResponse
 import requests
+import time
+import logging
+import traceback
+
+# Configure logging
+logger = logging.getLogger(__name__)
+registration_logger = logging.getLogger('registration')
 
 from .models import User, Follow, Achievement, UserAchievement
 from .serializers import (
@@ -20,17 +30,130 @@ from .serializers import (
 )
 from .aggregation import profile_aggregator
 
+@api_view(['GET'])
+@permission_classes([permissions.AllowAny])
+def ping_endpoint(request):
+    """Simple ping endpoint to test connectivity"""
+    try:
+        response_data = {
+            'status': 'pong',
+            'message': 'Backend is alive!',
+            'timestamp': time.time(),
+            'method': request.method,
+            'path': request.path,
+            'headers': dict(request.headers),
+            'service': 'user-service',
+            'version': '1.0.0'
+        }
+        
+        print(f"🏓 PING received: {request.method} {request.path}")
+        return JsonResponse(response_data, status=200)
+        
+    except Exception as e:
+        error_data = {
+            'status': 'error',
+            'message': 'Ping failed',
+            'error': str(e),
+            'service': 'user-service'
+        }
+        print(f"❌ PING ERROR: {str(e)}")
+        return JsonResponse(error_data, status=500)
+
+
+@api_view(['GET'])
+@permission_classes([permissions.AllowAny])
+def health_check(request):
+    """Health check endpoint for Consul service discovery"""
+    try:
+        from django.db import connection
+        from django.conf import settings
+        
+        # Test database connection
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT 1")
+            db_status = "healthy"
+        
+        response_data = {
+            'status': 'healthy',
+            'service': 'user-service',
+            'version': '1.0.0',
+            'timestamp': time.time(),
+            'checks': {
+                'database': db_status,
+                'django': 'healthy'
+            },
+            'environment': getattr(settings, 'ENVIRONMENT', 'development')
+        }
+        
+        print(f"🏥 Health check passed: {request.method} {request.path}")
+        return JsonResponse(response_data, status=200)
+        
+    except Exception as e:
+        error_data = {
+            'status': 'unhealthy',
+            'service': 'user-service',
+            'error': str(e),
+            'timestamp': time.time(),
+            'checks': {
+                'database': 'unhealthy',
+                'django': 'unhealthy'
+            }
+        }
+        print(f"❌ Health check failed: {str(e)}")
+        return JsonResponse(error_data, status=503)
+
 
 class RegisterViewSet(viewsets.GenericViewSet):
     serializer_class = RegisterSerializer
     permission_classes = [permissions.AllowAny]
 
     def create(self, request):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        user = serializer.save()
-        output_serializer = UserProfileSerializer(user, context={"request": request})
-        return Response(output_serializer.data, status=status.HTTP_201_CREATED)
+        registration_logger.info("=" * 50)
+        registration_logger.info("🔍 REGISTRATION REQUEST STARTED")
+        registration_logger.info(f"📊 Request Method: {request.method}")
+        registration_logger.info(f"📊 Request Headers: {dict(request.headers)}")
+        registration_logger.info(f"📊 Request Data: {request.data}")
+        registration_logger.info(f"📊 Request Content-Type: {request.content_type}")
+        
+        try:
+            serializer = self.get_serializer(data=request.data)
+            registration_logger.info("✅ Serializer created successfully")
+            
+            # Validate with detailed error logging
+            try:
+                serializer.is_valid(raise_exception=True)
+                registration_logger.info("✅ Serializer validation passed")
+            except serializers.ValidationError as e:
+                registration_logger.error(f"❌ Serializer validation failed: {e.detail}")
+                registration_logger.error(f"📊 Validation Errors: {serializer.errors}")
+                raise
+            
+            # Create user with detailed logging
+            try:
+                user = serializer.save()
+                registration_logger.info(f"✅ User created successfully: {user.username} (ID: {user.id})")
+                registration_logger.info(f"📊 User Email: {user.email}")
+            except Exception as e:
+                registration_logger.error(f"❌ User creation failed: {str(e)}")
+                registration_logger.error(f"📊 Traceback: {traceback.format_exc()}")
+                raise
+            
+            # Return response
+            output_serializer = UserProfileSerializer(user, context={"request": request})
+            response_data = output_serializer.data
+            registration_logger.info(f"✅ Registration successful for user: {user.username}")
+            registration_logger.info(f"📊 Response Data Keys: {list(response_data.keys())}")
+            registration_logger.info("=" * 50)
+            
+            return Response(response_data, status=status.HTTP_201_CREATED)
+            
+        except Exception as e:
+            registration_logger.error(f"💥 REGISTRATION FAILED: {str(e)}")
+            registration_logger.error(f"📊 Exception Type: {type(e).__name__}")
+            registration_logger.error(f"📊 Exception Args: {e.args}")
+            registration_logger.error(f"📊 Traceback: {traceback.format_exc()}")
+            registration_logger.info("=" * 50)
+            raise
 
 
 class LoginView(TokenObtainPairView):
@@ -228,6 +351,112 @@ def google_login_callback(request):
             {'error': f'Authentication error: {str(e)}'},
             status=status.HTTP_500_INTERNAL_SERVER_ERROR
         )
+
+
+class ProfileView(generics.RetrieveAPIView):
+    """
+    API endpoint for retrieving user profile by ID or current user.
+    Requires JWT authentication.
+    """
+    serializer_class = UserProfileSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    
+    def get_object(self):
+        """
+        Return user profile by ID from URL parameter or current user.
+        """
+        # Check if user_id is provided in URL
+        user_id = self.kwargs.get('user_id')
+        
+        if user_id:
+            try:
+                # Get user by ID
+                user = User.objects.get(id=user_id)
+                print(f"👤 Loading profile for user_id: {user_id}")
+                return user
+            except User.DoesNotExist:
+                print(f"❌ User not found with ID: {user_id}")
+                raise NotFound(f"User with ID {user_id} not found")
+        else:
+            # Return current authenticated user
+            print(f"👤 Loading current user profile: {self.request.user.username}")
+            return self.request.user
+    
+    def get(self, request, *args, **kwargs):
+        """
+        Override get method to provide better error messages.
+        """
+        try:
+            return super().get(request, *args, **kwargs)
+        except NotFound as e:
+            return Response(
+                {'error': str(e), 'detail': 'User not found'}, 
+                status=status.HTTP_404_NOT_FOUND
+            )
+        except Exception as e:
+            print(f"❌ Profile view error: {str(e)}")
+            return Response(
+                {'error': 'Failed to load profile', 'detail': str(e)}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+
+class ProfileByUsernameView(generics.RetrieveAPIView):
+    """
+    API endpoint for retrieving user profile by username.
+    Requires JWT authentication.
+    """
+    serializer_class = UserProfileSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    authentication_classes = [JWTAuthentication]
+    
+    def get_object(self):
+        """
+        Return user profile by username from URL parameter.
+        """
+        username = self.kwargs.get('username')
+        
+        if not username:
+            print(f"❌ No username provided")
+            return Response(
+                {'error': 'User not specified'}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        try:
+            # Get user by username
+            user = User.objects.get(username=username)
+            print(f"👤 Loading profile for username: {username}")
+            return user
+        except User.DoesNotExist:
+            print(f"❌ User not found with username: {username}")
+            raise NotFound(f"User '{username}' not found")
+    
+    def get(self, request, *args, **kwargs):
+        """
+        Override get method to provide better error messages.
+        """
+        try:
+            username = self.kwargs.get('username')
+            
+            if not username:
+                return Response(
+                    {'error': 'User not specified'}, 
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+            
+            return super().get(request, *args, **kwargs)
+        except NotFound as e:
+            return Response(
+                {'error': 'User not found', 'detail': str(e)}, 
+                status=status.HTTP_404_NOT_FOUND
+            )
+        except Exception as e:
+            print(f"❌ Profile by username view error: {str(e)}")
+            return Response(
+                {'error': 'Failed to load profile', 'detail': str(e)}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
 
 
 class ProfileUpdateView(generics.RetrieveUpdateAPIView):

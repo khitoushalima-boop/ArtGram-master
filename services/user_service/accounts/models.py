@@ -12,11 +12,12 @@ class User(AbstractUser):
     website = models.URLField(blank=True, null=True, help_text="Professional website or portfolio")
     updated_at = models.DateTimeField(auto_now=True, help_text="Timestamp for profile updates")
     
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['username']
+    # Keep username as USERNAME_FIELD for frontend compatibility
+    USERNAME_FIELD = 'username'
+    REQUIRED_FIELDS = ['email']
 
     def __str__(self):
-        return self.email
+        return self.username
 
 class Follow(models.Model):
     follower = models.ForeignKey(User, related_name='following', on_delete=models.CASCADE)

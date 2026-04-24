@@ -14,10 +14,11 @@ class AccountsConfig(AppConfig):
             from consul_utils import register_django_service
             from django.conf import settings
             
-            # Get service configuration
-            service_name = getattr(settings, 'SERVICE_NAME', 'user-service')
+            # Get service configuration with proper string casting
+            service_name = str(getattr(settings, 'SERVICE_NAME', 'user-service'))
             service_port = int(os.environ.get('SERVICE_PORT', '8000'))
-            health_check_url = f"http://127.0.0.1:{service_port}/health/"
+            # Use container name for Consul health checks (internal Docker networking)
+            health_check_url = f"http://user-service:8000/api/users/health/"
             
             # Service tags for discovery
             tags = [

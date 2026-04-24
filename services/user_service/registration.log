@@ -1,0 +1,510 @@
+INFO 2026-04-23 15:09:28,767 views 7 124243392480000 ==================================================
+INFO 2026-04-23 15:09:28,768 views 7 124243392480000 🔍 REGISTRATION REQUEST STARTED
+INFO 2026-04-23 15:09:28,768 views 7 124243392480000 📊 Request Method: POST
+INFO 2026-04-23 15:09:28,769 views 7 124243392480000 📊 Request Headers: {'Host': 'localhost', 'X-Real-Ip': '172.18.0.1', 'Content-Length': '89', 'User-Agent': 'curl/8.18.0', 'Accept': '*/*', 'Content-Type': 'application/json'}
+INFO 2026-04-23 15:09:28,771 views 7 124243392480000 📊 Request Data: {'username': 'test_arch_fix', 'email': 'test_arch@example.com', 'password': 'test123456'}
+INFO 2026-04-23 15:09:28,772 views 7 124243392480000 📊 Request Content-Type: application/json
+INFO 2026-04-23 15:09:28,773 views 7 124243392480000 ✅ Serializer created successfully
+INFO 2026-04-23 15:09:28,801 views 7 124243392480000 ✅ Serializer validation passed
+INFO 2026-04-23 15:09:29,270 views 7 124243392480000 ✅ User created successfully: test_arch_fix (ID: 26)
+INFO 2026-04-23 15:09:29,270 views 7 124243392480000 📊 User Email: test_arch@example.com
+INFO 2026-04-23 15:09:29,291 views 7 124243392480000 ✅ Registration successful for user: test_arch_fix
+INFO 2026-04-23 15:09:29,292 views 7 124243392480000 📊 Response Data Keys: ['id', 'username', 'email', 'avatar', 'bio', 'job_title', 'location', 'website', 'total_points', 'achievements', 'followers_count', 'following_count', 'arts_count']
+INFO 2026-04-23 15:09:29,293 views 7 124243392480000 ==================================================
+INFO 2026-04-23 15:10:59,594 views 7 124243392480000 ==================================================
+INFO 2026-04-23 15:10:59,594 views 7 124243392480000 🔍 REGISTRATION REQUEST STARTED
+INFO 2026-04-23 15:10:59,595 views 7 124243392480000 📊 Request Method: POST
+INFO 2026-04-23 15:10:59,596 views 7 124243392480000 📊 Request Headers: {'Host': '127.0.0.1:8000', 'Connection': 'keep-alive', 'Content-Length': '83', 'Sec-Ch-Ua-Platform': '"Windows"', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36 Edg/147.0.0.0', 'Sec-Ch-Ua': '"Microsoft Edge";v="147", "Not.A/Brand";v="8", "Chromium";v="147"', 'Content-Type': 'application/json', 'Sec-Ch-Ua-Mobile': '?0', 'Accept': '*/*', 'Origin': 'http://localhost:8001', 'Sec-Fetch-Site': 'cross-site', 'Sec-Fetch-Mode': 'cors', 'Sec-Fetch-Dest': 'empty', 'Referer': 'http://localhost:8001/', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept-Language': 'fr,fr-FR;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6'}
+INFO 2026-04-23 15:10:59,596 views 7 124243392480000 📊 Request Data: {'username': 'halima-art', 'email': 'halima@gamil.com', 'password': 'halimahalima12345'}
+INFO 2026-04-23 15:10:59,597 views 7 124243392480000 📊 Request Content-Type: application/json
+INFO 2026-04-23 15:10:59,597 views 7 124243392480000 ✅ Serializer created successfully
+ERROR 2026-04-23 15:10:59,627 views 7 124243392480000 ❌ Serializer validation failed: {'email': [ErrorDetail(string='user with this email already exists.', code='unique')]}
+ERROR 2026-04-23 15:10:59,628 views 7 124243392480000 📊 Validation Errors: {'email': [ErrorDetail(string='user with this email already exists.', code='unique')]}
+ERROR 2026-04-23 15:10:59,628 views 7 124243392480000 💥 REGISTRATION FAILED: {'email': [ErrorDetail(string='user with this email already exists.', code='unique')]}
+ERROR 2026-04-23 15:10:59,629 views 7 124243392480000 📊 Exception Type: ValidationError
+ERROR 2026-04-23 15:10:59,629 views 7 124243392480000 📊 Exception Args: ({'email': [ErrorDetail(string='user with this email already exists.', code='unique')]},)
+ERROR 2026-04-23 15:10:59,644 views 7 124243392480000 📊 Traceback: Traceback (most recent call last):
+  File "/app/accounts/views.py", line 79, in create
+    serializer.is_valid(raise_exception=True)
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/serializers.py", line 231, in is_valid
+    raise ValidationError(self.errors)
+rest_framework.exceptions.ValidationError: {'email': [ErrorDetail(string='user with this email already exists.', code='unique')]}
+
+INFO 2026-04-23 15:10:59,645 views 7 124243392480000 ==================================================
+WARNING 2026-04-23 15:10:59,646 log 7 124243392480000 Bad Request: /api/users/register/
+INFO 2026-04-23 15:11:38,026 views 7 124243392480000 ==================================================
+INFO 2026-04-23 15:11:38,027 views 7 124243392480000 🔍 REGISTRATION REQUEST STARTED
+INFO 2026-04-23 15:11:38,028 views 7 124243392480000 📊 Request Method: POST
+INFO 2026-04-23 15:11:38,029 views 7 124243392480000 📊 Request Headers: {'Host': '127.0.0.1:8000', 'Connection': 'keep-alive', 'Content-Length': '78', 'Sec-Ch-Ua-Platform': '"Windows"', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36 Edg/147.0.0.0', 'Sec-Ch-Ua': '"Microsoft Edge";v="147", "Not.A/Brand";v="8", "Chromium";v="147"', 'Content-Type': 'application/json', 'Sec-Ch-Ua-Mobile': '?0', 'Accept': '*/*', 'Origin': 'http://localhost:8001', 'Sec-Fetch-Site': 'cross-site', 'Sec-Fetch-Mode': 'cors', 'Sec-Fetch-Dest': 'empty', 'Referer': 'http://localhost:8001/', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept-Language': 'fr,fr-FR;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6'}
+INFO 2026-04-23 15:11:38,030 views 7 124243392480000 📊 Request Data: {'username': 'halima-art', 'email': 'halima@gamil.com', 'password': 'halimakh1234'}
+INFO 2026-04-23 15:11:38,031 views 7 124243392480000 📊 Request Content-Type: application/json
+INFO 2026-04-23 15:11:38,032 views 7 124243392480000 ✅ Serializer created successfully
+ERROR 2026-04-23 15:11:38,064 views 7 124243392480000 ❌ Serializer validation failed: {'email': [ErrorDetail(string='user with this email already exists.', code='unique')]}
+ERROR 2026-04-23 15:11:38,065 views 7 124243392480000 📊 Validation Errors: {'email': [ErrorDetail(string='user with this email already exists.', code='unique')]}
+ERROR 2026-04-23 15:11:38,067 views 7 124243392480000 💥 REGISTRATION FAILED: {'email': [ErrorDetail(string='user with this email already exists.', code='unique')]}
+ERROR 2026-04-23 15:11:38,067 views 7 124243392480000 📊 Exception Type: ValidationError
+ERROR 2026-04-23 15:11:38,068 views 7 124243392480000 📊 Exception Args: ({'email': [ErrorDetail(string='user with this email already exists.', code='unique')]},)
+ERROR 2026-04-23 15:11:38,072 views 7 124243392480000 📊 Traceback: Traceback (most recent call last):
+  File "/app/accounts/views.py", line 79, in create
+    serializer.is_valid(raise_exception=True)
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/serializers.py", line 231, in is_valid
+    raise ValidationError(self.errors)
+rest_framework.exceptions.ValidationError: {'email': [ErrorDetail(string='user with this email already exists.', code='unique')]}
+
+INFO 2026-04-23 15:11:38,073 views 7 124243392480000 ==================================================
+WARNING 2026-04-23 15:11:38,074 log 7 124243392480000 Bad Request: /api/users/register/
+INFO 2026-04-24 15:03:58,096 views 7 128278699287296 ==================================================
+INFO 2026-04-24 15:03:58,097 views 7 128278699287296 🔍 REGISTRATION REQUEST STARTED
+INFO 2026-04-24 15:03:58,098 views 7 128278699287296 📊 Request Method: POST
+INFO 2026-04-24 15:03:58,098 views 7 128278699287296 📊 Request Headers: {'Host': 'localhost', 'X-Real-Ip': '172.18.0.1', 'Content-Length': '86', 'User-Agent': 'curl/8.18.0', 'Accept': '*/*', 'Content-Type': 'application/json'}
+INFO 2026-04-24 15:03:58,099 views 7 128278699287296 📊 Request Data: {'username': 'test_gamil_domain', 'email': 'test@gamil.com', 'password': 'test123456'}
+INFO 2026-04-24 15:03:58,099 views 7 128278699287296 📊 Request Content-Type: application/json
+INFO 2026-04-24 15:03:58,100 views 7 128278699287296 ✅ Serializer created successfully
+INFO 2026-04-24 15:03:58,126 views 7 128278699287296 ✅ Serializer validation passed
+INFO 2026-04-24 15:03:58,437 views 7 128278699287296 ✅ User created successfully: test_gamil_domain (ID: 27)
+INFO 2026-04-24 15:03:58,439 views 7 128278699287296 📊 User Email: test@gamil.com
+INFO 2026-04-24 15:03:58,456 views 7 128278699287296 ✅ Registration successful for user: test_gamil_domain
+INFO 2026-04-24 15:03:58,457 views 7 128278699287296 📊 Response Data Keys: ['id', 'username', 'email', 'avatar', 'bio', 'job_title', 'location', 'website', 'total_points', 'achievements', 'followers_count', 'following_count', 'arts_count']
+INFO 2026-04-24 15:03:58,457 views 7 128278699287296 ==================================================
+INFO 2026-04-24 15:05:07,329 views 7 128278699287296 ==================================================
+INFO 2026-04-24 15:05:07,330 views 7 128278699287296 🔍 REGISTRATION REQUEST STARTED
+INFO 2026-04-24 15:05:07,331 views 7 128278699287296 📊 Request Method: POST
+INFO 2026-04-24 15:05:07,331 views 7 128278699287296 📊 Request Headers: {'Host': '127.0.0.1:8000', 'Connection': 'keep-alive', 'Content-Length': '79', 'Sec-Ch-Ua-Platform': '"Windows"', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36 Edg/147.0.0.0', 'Sec-Ch-Ua': '"Microsoft Edge";v="147", "Not.A/Brand";v="8", "Chromium";v="147"', 'Content-Type': 'application/json', 'Sec-Ch-Ua-Mobile': '?0', 'Accept': '*/*', 'Origin': 'http://localhost:8001', 'Sec-Fetch-Site': 'cross-site', 'Sec-Fetch-Mode': 'cors', 'Sec-Fetch-Dest': 'empty', 'Referer': 'http://localhost:8001/', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept-Language': 'fr,fr-FR;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6'}
+INFO 2026-04-24 15:05:07,332 views 7 128278699287296 📊 Request Data: {'username': 'halim-art', 'email': 'halima@gamil.com', 'password': 'halimahalima12'}
+INFO 2026-04-24 15:05:07,332 views 7 128278699287296 📊 Request Content-Type: application/json
+INFO 2026-04-24 15:05:07,333 views 7 128278699287296 ✅ Serializer created successfully
+ERROR 2026-04-24 15:05:07,355 views 7 128278699287296 ❌ Serializer validation failed: {'email': [ErrorDetail(string='user with this email already exists.', code='unique')]}
+ERROR 2026-04-24 15:05:07,356 views 7 128278699287296 📊 Validation Errors: {'email': [ErrorDetail(string='user with this email already exists.', code='unique')]}
+ERROR 2026-04-24 15:05:07,356 views 7 128278699287296 💥 REGISTRATION FAILED: {'email': [ErrorDetail(string='user with this email already exists.', code='unique')]}
+ERROR 2026-04-24 15:05:07,356 views 7 128278699287296 📊 Exception Type: ValidationError
+ERROR 2026-04-24 15:05:07,357 views 7 128278699287296 📊 Exception Args: ({'email': [ErrorDetail(string='user with this email already exists.', code='unique')]},)
+ERROR 2026-04-24 15:05:07,365 views 7 128278699287296 📊 Traceback: Traceback (most recent call last):
+  File "/app/accounts/views.py", line 79, in create
+    serializer.is_valid(raise_exception=True)
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/serializers.py", line 231, in is_valid
+    raise ValidationError(self.errors)
+rest_framework.exceptions.ValidationError: {'email': [ErrorDetail(string='user with this email already exists.', code='unique')]}
+
+INFO 2026-04-24 15:05:07,366 views 7 128278699287296 ==================================================
+WARNING 2026-04-24 15:05:07,367 log 7 128278699287296 Bad Request: /api/users/register/
+INFO 2026-04-24 15:11:56,611 views 7 126430238536448 ==================================================
+INFO 2026-04-24 15:11:56,612 views 7 126430238536448 🔍 REGISTRATION REQUEST STARTED
+INFO 2026-04-24 15:11:56,612 views 7 126430238536448 📊 Request Method: POST
+INFO 2026-04-24 15:11:56,613 views 7 126430238536448 📊 Request Headers: {'Host': 'localhost', 'X-Real-Ip': '172.18.0.1', 'Content-Length': '101', 'User-Agent': 'curl/8.18.0', 'Accept': '*/*', 'Content-Type': 'application/json'}
+INFO 2026-04-24 15:11:56,613 views 7 126430238536448 📊 Request Data: {'username': 'test_permission_fix', 'email': 'test_permission@example.com', 'password': 'test123456'}
+INFO 2026-04-24 15:11:56,614 views 7 126430238536448 📊 Request Content-Type: application/json
+INFO 2026-04-24 15:11:56,615 views 7 126430238536448 ✅ Serializer created successfully
+INFO 2026-04-24 15:11:56,647 views 7 126430238536448 ✅ Serializer validation passed
+INFO 2026-04-24 15:11:56,948 views 7 126430238536448 ✅ User created successfully: test_permission_fix (ID: 28)
+INFO 2026-04-24 15:11:56,949 views 7 126430238536448 📊 User Email: test_permission@example.com
+INFO 2026-04-24 15:11:56,971 views 7 126430238536448 ✅ Registration successful for user: test_permission_fix
+INFO 2026-04-24 15:11:56,971 views 7 126430238536448 📊 Response Data Keys: ['id', 'username', 'email', 'avatar', 'bio', 'job_title', 'location', 'website', 'total_points', 'achievements', 'followers_count', 'following_count', 'arts_count']
+INFO 2026-04-24 15:11:56,972 views 7 126430238536448 ==================================================
+INFO 2026-04-24 15:12:21,089 views 7 131549044437760 ==================================================
+INFO 2026-04-24 15:12:21,090 views 7 131549044437760 🔍 REGISTRATION REQUEST STARTED
+INFO 2026-04-24 15:12:21,091 views 7 131549044437760 📊 Request Method: POST
+INFO 2026-04-24 15:12:21,091 views 7 131549044437760 📊 Request Headers: {'Host': 'localhost', 'X-Real-Ip': '172.18.0.1', 'Content-Length': '91', 'User-Agent': 'curl/8.18.0', 'Accept': '*/*', 'Content-Type': 'application/json'}
+INFO 2026-04-24 15:12:21,092 views 7 131549044437760 📊 Request Data: {'username': 'test_final_fix', 'email': 'test_final@example.com', 'password': 'test123456'}
+INFO 2026-04-24 15:12:21,093 views 7 131549044437760 📊 Request Content-Type: application/json
+INFO 2026-04-24 15:12:21,093 views 7 131549044437760 ✅ Serializer created successfully
+INFO 2026-04-24 15:12:21,124 views 7 131549044437760 ✅ Serializer validation passed
+INFO 2026-04-24 15:12:21,551 views 7 131549044437760 ✅ User created successfully: test_final_fix (ID: 29)
+INFO 2026-04-24 15:12:21,552 views 7 131549044437760 📊 User Email: test_final@example.com
+INFO 2026-04-24 15:12:21,575 views 7 131549044437760 ✅ Registration successful for user: test_final_fix
+INFO 2026-04-24 15:12:21,576 views 7 131549044437760 📊 Response Data Keys: ['id', 'username', 'email', 'avatar', 'bio', 'job_title', 'location', 'website', 'total_points', 'achievements', 'followers_count', 'following_count', 'arts_count']
+INFO 2026-04-24 15:12:21,576 views 7 131549044437760 ==================================================
+INFO 2026-04-24 15:13:03,538 views 7 131549044437760 ==================================================
+INFO 2026-04-24 15:13:03,539 views 7 131549044437760 🔍 REGISTRATION REQUEST STARTED
+INFO 2026-04-24 15:13:03,539 views 7 131549044437760 📊 Request Method: POST
+INFO 2026-04-24 15:13:03,540 views 7 131549044437760 📊 Request Headers: {'Host': '127.0.0.1:8000', 'Connection': 'keep-alive', 'Content-Length': '80', 'Sec-Ch-Ua-Platform': '"Windows"', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36 Edg/147.0.0.0', 'Sec-Ch-Ua': '"Microsoft Edge";v="147", "Not.A/Brand";v="8", "Chromium";v="147"', 'Content-Type': 'application/json', 'Sec-Ch-Ua-Mobile': '?0', 'Accept': '*/*', 'Origin': 'http://localhost:8001', 'Sec-Fetch-Site': 'cross-site', 'Sec-Fetch-Mode': 'cors', 'Sec-Fetch-Dest': 'empty', 'Referer': 'http://localhost:8001/', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept-Language': 'fr,fr-FR;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6'}
+INFO 2026-04-24 15:13:03,541 views 7 131549044437760 📊 Request Data: {'username': 'halima-art', 'email': 'halima@gamil.com', 'password': 'halimahalima12'}
+INFO 2026-04-24 15:13:03,541 views 7 131549044437760 📊 Request Content-Type: application/json
+INFO 2026-04-24 15:13:03,542 views 7 131549044437760 ✅ Serializer created successfully
+ERROR 2026-04-24 15:13:03,555 views 7 131549044437760 ❌ Serializer validation failed: {'email': [ErrorDetail(string='user with this email already exists.', code='unique')]}
+ERROR 2026-04-24 15:13:03,555 views 7 131549044437760 📊 Validation Errors: {'email': [ErrorDetail(string='user with this email already exists.', code='unique')]}
+ERROR 2026-04-24 15:13:03,555 views 7 131549044437760 💥 REGISTRATION FAILED: {'email': [ErrorDetail(string='user with this email already exists.', code='unique')]}
+ERROR 2026-04-24 15:13:03,556 views 7 131549044437760 📊 Exception Type: ValidationError
+ERROR 2026-04-24 15:13:03,556 views 7 131549044437760 📊 Exception Args: ({'email': [ErrorDetail(string='user with this email already exists.', code='unique')]},)
+ERROR 2026-04-24 15:13:03,561 views 7 131549044437760 📊 Traceback: Traceback (most recent call last):
+  File "/app/accounts/views.py", line 79, in create
+    serializer.is_valid(raise_exception=True)
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/serializers.py", line 231, in is_valid
+    raise ValidationError(self.errors)
+rest_framework.exceptions.ValidationError: {'email': [ErrorDetail(string='user with this email already exists.', code='unique')]}
+
+INFO 2026-04-24 15:13:03,562 views 7 131549044437760 ==================================================
+WARNING 2026-04-24 15:13:03,562 log 7 131549044437760 Bad Request: /api/users/register/
+INFO 2026-04-24 15:13:18,102 views 7 131549044437760 ==================================================
+INFO 2026-04-24 15:13:18,102 views 7 131549044437760 🔍 REGISTRATION REQUEST STARTED
+INFO 2026-04-24 15:13:18,103 views 7 131549044437760 📊 Request Method: POST
+INFO 2026-04-24 15:13:18,103 views 7 131549044437760 📊 Request Headers: {'Host': '127.0.0.1:8000', 'Connection': 'keep-alive', 'Content-Length': '80', 'Sec-Ch-Ua-Platform': '"Windows"', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36 Edg/147.0.0.0', 'Sec-Ch-Ua': '"Microsoft Edge";v="147", "Not.A/Brand";v="8", "Chromium";v="147"', 'Content-Type': 'application/json', 'Sec-Ch-Ua-Mobile': '?0', 'Accept': '*/*', 'Origin': 'http://localhost:8001', 'Sec-Fetch-Site': 'cross-site', 'Sec-Fetch-Mode': 'cors', 'Sec-Fetch-Dest': 'empty', 'Referer': 'http://localhost:8001/', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept-Language': 'fr,fr-FR;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6'}
+INFO 2026-04-24 15:13:18,104 views 7 131549044437760 📊 Request Data: {'username': 'halima-art', 'email': 'halima@gamil.com', 'password': 'HALIMAHALIMA12'}
+INFO 2026-04-24 15:13:18,104 views 7 131549044437760 📊 Request Content-Type: application/json
+INFO 2026-04-24 15:13:18,105 views 7 131549044437760 ✅ Serializer created successfully
+ERROR 2026-04-24 15:13:18,115 views 7 131549044437760 ❌ Serializer validation failed: {'email': [ErrorDetail(string='user with this email already exists.', code='unique')]}
+ERROR 2026-04-24 15:13:18,115 views 7 131549044437760 📊 Validation Errors: {'email': [ErrorDetail(string='user with this email already exists.', code='unique')]}
+ERROR 2026-04-24 15:13:18,115 views 7 131549044437760 💥 REGISTRATION FAILED: {'email': [ErrorDetail(string='user with this email already exists.', code='unique')]}
+ERROR 2026-04-24 15:13:18,116 views 7 131549044437760 📊 Exception Type: ValidationError
+ERROR 2026-04-24 15:13:18,116 views 7 131549044437760 📊 Exception Args: ({'email': [ErrorDetail(string='user with this email already exists.', code='unique')]},)
+ERROR 2026-04-24 15:13:18,117 views 7 131549044437760 📊 Traceback: Traceback (most recent call last):
+  File "/app/accounts/views.py", line 79, in create
+    serializer.is_valid(raise_exception=True)
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/serializers.py", line 231, in is_valid
+    raise ValidationError(self.errors)
+rest_framework.exceptions.ValidationError: {'email': [ErrorDetail(string='user with this email already exists.', code='unique')]}
+
+INFO 2026-04-24 15:13:18,118 views 7 131549044437760 ==================================================
+WARNING 2026-04-24 15:13:18,118 log 7 131549044437760 Bad Request: /api/users/register/
+INFO 2026-04-24 15:16:42,001 views 7 131549044437760 ==================================================
+INFO 2026-04-24 15:16:42,002 views 7 131549044437760 🔍 REGISTRATION REQUEST STARTED
+INFO 2026-04-24 15:16:42,003 views 7 131549044437760 📊 Request Method: POST
+INFO 2026-04-24 15:16:42,003 views 7 131549044437760 📊 Request Headers: {'Host': '127.0.0.1:8000', 'Connection': 'keep-alive', 'Content-Length': '86', 'Sec-Ch-Ua-Platform': '"Windows"', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36 Edg/147.0.0.0', 'Sec-Ch-Ua': '"Microsoft Edge";v="147", "Not.A/Brand";v="8", "Chromium";v="147"', 'Content-Type': 'application/json', 'Sec-Ch-Ua-Mobile': '?0', 'Accept': '*/*', 'Origin': 'http://localhost:8001', 'Sec-Fetch-Site': 'cross-site', 'Sec-Fetch-Mode': 'cors', 'Sec-Fetch-Dest': 'empty', 'Referer': 'http://localhost:8001/', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept-Language': 'fr,fr-FR;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6'}
+INFO 2026-04-24 15:16:42,004 views 7 131549044437760 📊 Request Data: {'username': 'halima-art', 'email': 'halimahalima@gamil.com', 'password': 'HALIMAHALIMA12'}
+INFO 2026-04-24 15:16:42,004 views 7 131549044437760 📊 Request Content-Type: application/json
+INFO 2026-04-24 15:16:42,004 views 7 131549044437760 ✅ Serializer created successfully
+INFO 2026-04-24 15:16:42,021 views 7 131549044437760 ✅ Serializer validation passed
+INFO 2026-04-24 15:16:42,303 views 7 131549044437760 ✅ User created successfully: halima-art (ID: 30)
+INFO 2026-04-24 15:16:42,303 views 7 131549044437760 📊 User Email: halimahalima@gamil.com
+INFO 2026-04-24 15:16:42,320 views 7 131549044437760 ✅ Registration successful for user: halima-art
+INFO 2026-04-24 15:16:42,320 views 7 131549044437760 📊 Response Data Keys: ['id', 'username', 'email', 'avatar', 'bio', 'job_title', 'location', 'website', 'total_points', 'achievements', 'followers_count', 'following_count', 'arts_count']
+INFO 2026-04-24 15:16:42,321 views 7 131549044437760 ==================================================
+WARNING 2026-04-24 15:17:08,614 log 7 131549044437760 Unauthorized: /api/users/login/
+WARNING 2026-04-24 15:17:38,372 log 7 131549044437760 Unauthorized: /api/users/login/
+INFO 2026-04-24 15:18:25,396 views 7 131549044437760 ==================================================
+INFO 2026-04-24 15:18:25,397 views 7 131549044437760 🔍 REGISTRATION REQUEST STARTED
+INFO 2026-04-24 15:18:25,398 views 7 131549044437760 📊 Request Method: POST
+INFO 2026-04-24 15:18:25,398 views 7 131549044437760 📊 Request Headers: {'Host': '127.0.0.1:8000', 'Connection': 'keep-alive', 'Content-Length': '78', 'Sec-Ch-Ua-Platform': '"Windows"', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36 Edg/147.0.0.0', 'Sec-Ch-Ua': '"Microsoft Edge";v="147", "Not.A/Brand";v="8", "Chromium";v="147"', 'Content-Type': 'application/json', 'Sec-Ch-Ua-Mobile': '?0', 'Accept': '*/*', 'Origin': 'http://localhost:8001', 'Sec-Fetch-Site': 'cross-site', 'Sec-Fetch-Mode': 'cors', 'Sec-Fetch-Dest': 'empty', 'Referer': 'http://localhost:8001/', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept-Language': 'fr,fr-FR;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6'}
+INFO 2026-04-24 15:18:25,399 views 7 131549044437760 📊 Request Data: {'username': 'marwa-art', 'email': 'marwakh@gmail.com', 'password': 'marwamarwa12'}
+INFO 2026-04-24 15:18:25,399 views 7 131549044437760 📊 Request Content-Type: application/json
+INFO 2026-04-24 15:18:25,399 views 7 131549044437760 ✅ Serializer created successfully
+ERROR 2026-04-24 15:18:25,423 views 7 131549044437760 ❌ Serializer validation failed: {'email': [ErrorDetail(string='user with this email already exists.', code='unique')]}
+ERROR 2026-04-24 15:18:25,424 views 7 131549044437760 📊 Validation Errors: {'email': [ErrorDetail(string='user with this email already exists.', code='unique')]}
+ERROR 2026-04-24 15:18:25,425 views 7 131549044437760 💥 REGISTRATION FAILED: {'email': [ErrorDetail(string='user with this email already exists.', code='unique')]}
+ERROR 2026-04-24 15:18:25,426 views 7 131549044437760 📊 Exception Type: ValidationError
+ERROR 2026-04-24 15:18:25,426 views 7 131549044437760 📊 Exception Args: ({'email': [ErrorDetail(string='user with this email already exists.', code='unique')]},)
+ERROR 2026-04-24 15:18:25,428 views 7 131549044437760 📊 Traceback: Traceback (most recent call last):
+  File "/app/accounts/views.py", line 79, in create
+    serializer.is_valid(raise_exception=True)
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/serializers.py", line 231, in is_valid
+    raise ValidationError(self.errors)
+rest_framework.exceptions.ValidationError: {'email': [ErrorDetail(string='user with this email already exists.', code='unique')]}
+
+INFO 2026-04-24 15:18:25,429 views 7 131549044437760 ==================================================
+WARNING 2026-04-24 15:18:25,429 log 7 131549044437760 Bad Request: /api/users/register/
+INFO 2026-04-24 15:18:55,492 views 7 131549044437760 ==================================================
+INFO 2026-04-24 15:18:55,493 views 7 131549044437760 🔍 REGISTRATION REQUEST STARTED
+INFO 2026-04-24 15:18:55,493 views 7 131549044437760 📊 Request Method: POST
+INFO 2026-04-24 15:18:55,493 views 7 131549044437760 📊 Request Headers: {'Host': '127.0.0.1:8000', 'Connection': 'keep-alive', 'Content-Length': '77', 'Sec-Ch-Ua-Platform': '"Windows"', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36 Edg/147.0.0.0', 'Sec-Ch-Ua': '"Microsoft Edge";v="147", "Not.A/Brand";v="8", "Chromium";v="147"', 'Content-Type': 'application/json', 'Sec-Ch-Ua-Mobile': '?0', 'Accept': '*/*', 'Origin': 'http://localhost:8001', 'Sec-Fetch-Site': 'cross-site', 'Sec-Fetch-Mode': 'cors', 'Sec-Fetch-Dest': 'empty', 'Referer': 'http://localhost:8001/', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept-Language': 'fr,fr-FR;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6'}
+INFO 2026-04-24 15:18:55,494 views 7 131549044437760 📊 Request Data: {'username': 'marwa-art', 'email': 'marwakh@gmail.com', 'password': 'MARWAMIMI12'}
+INFO 2026-04-24 15:18:55,494 views 7 131549044437760 📊 Request Content-Type: application/json
+INFO 2026-04-24 15:18:55,495 views 7 131549044437760 ✅ Serializer created successfully
+ERROR 2026-04-24 15:18:55,511 views 7 131549044437760 ❌ Serializer validation failed: {'email': [ErrorDetail(string='user with this email already exists.', code='unique')]}
+ERROR 2026-04-24 15:18:55,512 views 7 131549044437760 📊 Validation Errors: {'email': [ErrorDetail(string='user with this email already exists.', code='unique')]}
+ERROR 2026-04-24 15:18:55,512 views 7 131549044437760 💥 REGISTRATION FAILED: {'email': [ErrorDetail(string='user with this email already exists.', code='unique')]}
+ERROR 2026-04-24 15:18:55,513 views 7 131549044437760 📊 Exception Type: ValidationError
+ERROR 2026-04-24 15:18:55,514 views 7 131549044437760 📊 Exception Args: ({'email': [ErrorDetail(string='user with this email already exists.', code='unique')]},)
+ERROR 2026-04-24 15:18:55,516 views 7 131549044437760 📊 Traceback: Traceback (most recent call last):
+  File "/app/accounts/views.py", line 79, in create
+    serializer.is_valid(raise_exception=True)
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/serializers.py", line 231, in is_valid
+    raise ValidationError(self.errors)
+rest_framework.exceptions.ValidationError: {'email': [ErrorDetail(string='user with this email already exists.', code='unique')]}
+
+INFO 2026-04-24 15:18:55,516 views 7 131549044437760 ==================================================
+WARNING 2026-04-24 15:18:55,517 log 7 131549044437760 Bad Request: /api/users/register/
+INFO 2026-04-24 15:19:07,531 views 7 131549044437760 ==================================================
+INFO 2026-04-24 15:19:07,532 views 7 131549044437760 🔍 REGISTRATION REQUEST STARTED
+INFO 2026-04-24 15:19:07,533 views 7 131549044437760 📊 Request Method: POST
+INFO 2026-04-24 15:19:07,533 views 7 131549044437760 📊 Request Headers: {'Host': '127.0.0.1:8000', 'Connection': 'keep-alive', 'Content-Length': '77', 'Sec-Ch-Ua-Platform': '"Windows"', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36 Edg/147.0.0.0', 'Sec-Ch-Ua': '"Microsoft Edge";v="147", "Not.A/Brand";v="8", "Chromium";v="147"', 'Content-Type': 'application/json', 'Sec-Ch-Ua-Mobile': '?0', 'Accept': '*/*', 'Origin': 'http://localhost:8001', 'Sec-Fetch-Site': 'cross-site', 'Sec-Fetch-Mode': 'cors', 'Sec-Fetch-Dest': 'empty', 'Referer': 'http://localhost:8001/', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept-Language': 'fr,fr-FR;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6'}
+INFO 2026-04-24 15:19:07,534 views 7 131549044437760 📊 Request Data: {'username': 'marwa-art', 'email': 'marwakh@gmail.com', 'password': 'MARWAMIMI12'}
+INFO 2026-04-24 15:19:07,535 views 7 131549044437760 📊 Request Content-Type: application/json
+INFO 2026-04-24 15:19:07,536 views 7 131549044437760 ✅ Serializer created successfully
+ERROR 2026-04-24 15:19:07,558 views 7 131549044437760 ❌ Serializer validation failed: {'email': [ErrorDetail(string='user with this email already exists.', code='unique')]}
+ERROR 2026-04-24 15:19:07,558 views 7 131549044437760 📊 Validation Errors: {'email': [ErrorDetail(string='user with this email already exists.', code='unique')]}
+ERROR 2026-04-24 15:19:07,559 views 7 131549044437760 💥 REGISTRATION FAILED: {'email': [ErrorDetail(string='user with this email already exists.', code='unique')]}
+ERROR 2026-04-24 15:19:07,559 views 7 131549044437760 📊 Exception Type: ValidationError
+ERROR 2026-04-24 15:19:07,560 views 7 131549044437760 📊 Exception Args: ({'email': [ErrorDetail(string='user with this email already exists.', code='unique')]},)
+ERROR 2026-04-24 15:19:07,563 views 7 131549044437760 📊 Traceback: Traceback (most recent call last):
+  File "/app/accounts/views.py", line 79, in create
+    serializer.is_valid(raise_exception=True)
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/serializers.py", line 231, in is_valid
+    raise ValidationError(self.errors)
+rest_framework.exceptions.ValidationError: {'email': [ErrorDetail(string='user with this email already exists.', code='unique')]}
+
+INFO 2026-04-24 15:19:07,564 views 7 131549044437760 ==================================================
+WARNING 2026-04-24 15:19:07,565 log 7 131549044437760 Bad Request: /api/users/register/
+WARNING 2026-04-24 15:28:52,153 log 7 133710583456512 Not Found: /api/users/health/
+INFO 2026-04-24 15:34:31,352 views 7 127424931517184 ==================================================
+INFO 2026-04-24 15:34:31,353 views 7 127424931517184 🔍 REGISTRATION REQUEST STARTED
+INFO 2026-04-24 15:34:31,354 views 7 127424931517184 📊 Request Method: POST
+INFO 2026-04-24 15:34:31,354 views 7 127424931517184 📊 Request Headers: {'Host': 'localhost', 'X-Real-Ip': '172.18.0.1', 'Content-Length': '87', 'User-Agent': 'curl/8.18.0', 'Accept': '*/*', 'Content-Type': 'application/json'}
+INFO 2026-04-24 15:34:31,355 views 7 127424931517184 📊 Request Data: {'username': 'test_gamil_final', 'email': 'halima@gamil.com', 'password': 'test123456'}
+INFO 2026-04-24 15:34:31,355 views 7 127424931517184 📊 Request Content-Type: application/json
+INFO 2026-04-24 15:34:31,356 views 7 127424931517184 ✅ Serializer created successfully
+ERROR 2026-04-24 15:34:31,375 views 7 127424931517184 ❌ Serializer validation failed: {'email': [ErrorDetail(string='user with this email already exists.', code='unique')]}
+ERROR 2026-04-24 15:34:31,376 views 7 127424931517184 📊 Validation Errors: {'email': [ErrorDetail(string='user with this email already exists.', code='unique')]}
+ERROR 2026-04-24 15:34:31,376 views 7 127424931517184 💥 REGISTRATION FAILED: {'email': [ErrorDetail(string='user with this email already exists.', code='unique')]}
+ERROR 2026-04-24 15:34:31,376 views 7 127424931517184 📊 Exception Type: ValidationError
+ERROR 2026-04-24 15:34:31,377 views 7 127424931517184 📊 Exception Args: ({'email': [ErrorDetail(string='user with this email already exists.', code='unique')]},)
+ERROR 2026-04-24 15:34:31,383 views 7 127424931517184 📊 Traceback: Traceback (most recent call last):
+  File "/app/accounts/views.py", line 122, in create
+    serializer.is_valid(raise_exception=True)
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/serializers.py", line 231, in is_valid
+    raise ValidationError(self.errors)
+rest_framework.exceptions.ValidationError: {'email': [ErrorDetail(string='user with this email already exists.', code='unique')]}
+
+INFO 2026-04-24 15:34:31,384 views 7 127424931517184 ==================================================
+WARNING 2026-04-24 15:34:31,385 log 7 127424931517184 Bad Request: /api/users/register/
+INFO 2026-04-24 15:34:36,558 views 7 127424931517184 ==================================================
+INFO 2026-04-24 15:34:36,559 views 7 127424931517184 🔍 REGISTRATION REQUEST STARTED
+INFO 2026-04-24 15:34:36,560 views 7 127424931517184 📊 Request Method: POST
+INFO 2026-04-24 15:34:36,560 views 7 127424931517184 📊 Request Headers: {'Host': 'localhost', 'X-Real-Ip': '172.18.0.1', 'Content-Length': '86', 'User-Agent': 'curl/8.18.0', 'Accept': '*/*', 'Content-Type': 'application/json'}
+INFO 2026-04-24 15:34:36,561 views 7 127424931517184 📊 Request Data: {'username': 'test_gamil_new', 'email': 'newuser@gamil.com', 'password': 'test123456'}
+INFO 2026-04-24 15:34:36,561 views 7 127424931517184 📊 Request Content-Type: application/json
+INFO 2026-04-24 15:34:36,562 views 7 127424931517184 ✅ Serializer created successfully
+INFO 2026-04-24 15:34:36,575 views 7 127424931517184 ✅ Serializer validation passed
+INFO 2026-04-24 15:34:36,848 views 7 127424931517184 ✅ User created successfully: test_gamil_new (ID: 31)
+INFO 2026-04-24 15:34:36,849 views 7 127424931517184 📊 User Email: newuser@gamil.com
+INFO 2026-04-24 15:34:36,864 views 7 127424931517184 ✅ Registration successful for user: test_gamil_new
+INFO 2026-04-24 15:34:36,864 views 7 127424931517184 📊 Response Data Keys: ['id', 'username', 'email', 'avatar', 'bio', 'job_title', 'location', 'website', 'total_points', 'achievements', 'followers_count', 'following_count', 'arts_count']
+INFO 2026-04-24 15:34:36,865 views 7 127424931517184 ==================================================
+INFO 2026-04-24 15:42:40,804 views 7 128788006531840 ==================================================
+INFO 2026-04-24 15:42:40,805 views 7 128788006531840 🔍 REGISTRATION REQUEST STARTED
+INFO 2026-04-24 15:42:40,806 views 7 128788006531840 📊 Request Method: POST
+INFO 2026-04-24 15:42:40,806 views 7 128788006531840 📊 Request Headers: {'Host': 'localhost', 'X-Real-Ip': '172.18.0.1', 'User-Agent': 'curl/8.18.0', 'Accept': '*/*'}
+INFO 2026-04-24 15:42:40,807 views 7 128788006531840 📊 Request Data: {}
+INFO 2026-04-24 15:42:40,807 views 7 128788006531840 📊 Request Content-Type: 
+INFO 2026-04-24 15:42:40,807 views 7 128788006531840 ✅ Serializer created successfully
+ERROR 2026-04-24 15:42:40,809 views 7 128788006531840 ❌ Serializer validation failed: {'username': [ErrorDetail(string='This field is required.', code='required')], 'email': [ErrorDetail(string='This field is required.', code='required')], 'password': [ErrorDetail(string='This field is required.', code='required')]}
+ERROR 2026-04-24 15:42:40,809 views 7 128788006531840 📊 Validation Errors: {'username': [ErrorDetail(string='This field is required.', code='required')], 'email': [ErrorDetail(string='This field is required.', code='required')], 'password': [ErrorDetail(string='This field is required.', code='required')]}
+ERROR 2026-04-24 15:42:40,810 views 7 128788006531840 💥 REGISTRATION FAILED: {'username': [ErrorDetail(string='This field is required.', code='required')], 'email': [ErrorDetail(string='This field is required.', code='required')], 'password': [ErrorDetail(string='This field is required.', code='required')]}
+ERROR 2026-04-24 15:42:40,810 views 7 128788006531840 📊 Exception Type: ValidationError
+ERROR 2026-04-24 15:42:40,810 views 7 128788006531840 📊 Exception Args: ({'username': [ErrorDetail(string='This field is required.', code='required')], 'email': [ErrorDetail(string='This field is required.', code='required')], 'password': [ErrorDetail(string='This field is required.', code='required')]},)
+ERROR 2026-04-24 15:42:40,816 views 7 128788006531840 📊 Traceback: Traceback (most recent call last):
+  File "/app/accounts/views.py", line 122, in create
+    serializer.is_valid(raise_exception=True)
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/serializers.py", line 231, in is_valid
+    raise ValidationError(self.errors)
+rest_framework.exceptions.ValidationError: {'username': [ErrorDetail(string='This field is required.', code='required')], 'email': [ErrorDetail(string='This field is required.', code='required')], 'password': [ErrorDetail(string='This field is required.', code='required')]}
+
+INFO 2026-04-24 15:42:40,816 views 7 128788006531840 ==================================================
+WARNING 2026-04-24 15:42:40,817 log 7 128788006531840 Bad Request: /api/users/register/
+INFO 2026-04-24 15:48:51,685 views 7 130082605798144 ==================================================
+INFO 2026-04-24 15:48:51,687 views 7 130082605798144 🔍 REGISTRATION REQUEST STARTED
+INFO 2026-04-24 15:48:51,687 views 7 130082605798144 📊 Request Method: POST
+INFO 2026-04-24 15:48:51,688 views 7 130082605798144 📊 Request Headers: {'Host': 'localhost', 'X-Real-Ip': '172.18.0.1', 'X-Forwarded-For': '172.18.0.1', 'Content-Length': '79', 'User-Agent': 'curl/8.18.0', 'Accept': '*/*', 'Content-Type': 'application/json'}
+INFO 2026-04-24 15:48:51,689 views 7 130082605798144 📊 Request Data: {'username': 'test_fixed', 'email': 'test@gamil.com', 'password': 'test123456'}
+INFO 2026-04-24 15:48:51,689 views 7 130082605798144 📊 Request Content-Type: application/json
+INFO 2026-04-24 15:48:51,690 views 7 130082605798144 ✅ Serializer created successfully
+ERROR 2026-04-24 15:48:51,713 views 7 130082605798144 ❌ Serializer validation failed: {'email': [ErrorDetail(string='user with this email already exists.', code='unique')]}
+ERROR 2026-04-24 15:48:51,714 views 7 130082605798144 📊 Validation Errors: {'email': [ErrorDetail(string='user with this email already exists.', code='unique')]}
+ERROR 2026-04-24 15:48:51,714 views 7 130082605798144 💥 REGISTRATION FAILED: {'email': [ErrorDetail(string='user with this email already exists.', code='unique')]}
+ERROR 2026-04-24 15:48:51,714 views 7 130082605798144 📊 Exception Type: ValidationError
+ERROR 2026-04-24 15:48:51,715 views 7 130082605798144 📊 Exception Args: ({'email': [ErrorDetail(string='user with this email already exists.', code='unique')]},)
+ERROR 2026-04-24 15:48:51,724 views 7 130082605798144 📊 Traceback: Traceback (most recent call last):
+  File "/app/accounts/views.py", line 122, in create
+    serializer.is_valid(raise_exception=True)
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/serializers.py", line 231, in is_valid
+    raise ValidationError(self.errors)
+rest_framework.exceptions.ValidationError: {'email': [ErrorDetail(string='user with this email already exists.', code='unique')]}
+
+INFO 2026-04-24 15:48:51,725 views 7 130082605798144 ==================================================
+WARNING 2026-04-24 15:48:51,725 log 7 130082605798144 Bad Request: /api/users/register/
+INFO 2026-04-24 15:48:56,837 views 7 130082605798144 ==================================================
+INFO 2026-04-24 15:48:56,838 views 7 130082605798144 🔍 REGISTRATION REQUEST STARTED
+INFO 2026-04-24 15:48:56,838 views 7 130082605798144 📊 Request Method: POST
+INFO 2026-04-24 15:48:56,839 views 7 130082605798144 📊 Request Headers: {'Host': 'localhost', 'X-Real-Ip': '172.18.0.1', 'X-Forwarded-For': '172.18.0.1', 'Content-Length': '80', 'User-Agent': 'curl/8.18.0', 'Accept': '*/*', 'Content-Type': 'application/json'}
+INFO 2026-04-24 15:48:56,839 views 7 130082605798144 📊 Request Data: {'username': 'test_final', 'email': 'final@gamil.com', 'password': 'test123456'}
+INFO 2026-04-24 15:48:56,840 views 7 130082605798144 📊 Request Content-Type: application/json
+INFO 2026-04-24 15:48:56,840 views 7 130082605798144 ✅ Serializer created successfully
+INFO 2026-04-24 15:48:56,856 views 7 130082605798144 ✅ Serializer validation passed
+INFO 2026-04-24 15:48:57,142 views 7 130082605798144 ✅ User created successfully: test_final (ID: 32)
+INFO 2026-04-24 15:48:57,142 views 7 130082605798144 📊 User Email: final@gamil.com
+INFO 2026-04-24 15:48:57,152 views 7 130082605798144 ✅ Registration successful for user: test_final
+INFO 2026-04-24 15:48:57,153 views 7 130082605798144 📊 Response Data Keys: ['id', 'username', 'email', 'avatar', 'bio', 'job_title', 'location', 'website', 'total_points', 'achievements', 'followers_count', 'following_count', 'arts_count']
+INFO 2026-04-24 15:48:57,154 views 7 130082605798144 ==================================================
+INFO 2026-04-24 15:53:25,799 views 7 127178720371456 ==================================================
+INFO 2026-04-24 15:53:25,800 views 7 127178720371456 🔍 REGISTRATION REQUEST STARTED
+INFO 2026-04-24 15:53:25,801 views 7 127178720371456 📊 Request Method: POST
+INFO 2026-04-24 15:53:25,802 views 7 127178720371456 📊 Request Headers: {'Host': 'localhost', 'X-Real-Ip': '172.18.0.1', 'X-Forwarded-For': '172.18.0.1', 'Content-Length': '77', 'User-Agent': 'curl/8.18.0', 'Accept': '*/*', 'Origin': 'http://localhost:3000', 'Content-Type': 'application/json'}
+INFO 2026-04-24 15:53:25,802 views 7 127178720371456 📊 Request Data: {'username': 'test_cors', 'email': 'test@cors.com', 'password': 'test123456'}
+INFO 2026-04-24 15:53:25,803 views 7 127178720371456 📊 Request Content-Type: application/json
+INFO 2026-04-24 15:53:25,803 views 7 127178720371456 ✅ Serializer created successfully
+INFO 2026-04-24 15:53:25,825 views 7 127178720371456 ✅ Serializer validation passed
+INFO 2026-04-24 15:53:26,113 views 7 127178720371456 ✅ User created successfully: test_cors (ID: 33)
+INFO 2026-04-24 15:53:26,114 views 7 127178720371456 📊 User Email: test@cors.com
+INFO 2026-04-24 15:53:26,132 views 7 127178720371456 ✅ Registration successful for user: test_cors
+INFO 2026-04-24 15:53:26,132 views 7 127178720371456 📊 Response Data Keys: ['id', 'username', 'email', 'avatar', 'bio', 'job_title', 'location', 'website', 'total_points', 'achievements', 'followers_count', 'following_count', 'arts_count']
+INFO 2026-04-24 15:53:26,133 views 7 127178720371456 ==================================================
+INFO 2026-04-24 15:55:53,002 views 7 127178720371456 ==================================================
+INFO 2026-04-24 15:55:53,002 views 7 127178720371456 🔍 REGISTRATION REQUEST STARTED
+INFO 2026-04-24 15:55:53,003 views 7 127178720371456 📊 Request Method: POST
+INFO 2026-04-24 15:55:53,003 views 7 127178720371456 📊 Request Headers: {'Host': '127.0.0.1:8000', 'Connection': 'keep-alive', 'Content-Length': '78', 'Sec-Ch-Ua-Platform': '"Windows"', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/147.0.0.0 Safari/537.36 Edg/147.0.0.0', 'Sec-Ch-Ua': '"Microsoft Edge";v="147", "Not.A/Brand";v="8", "Chromium";v="147"', 'Content-Type': 'application/json', 'Sec-Ch-Ua-Mobile': '?0', 'Accept': '*/*', 'Origin': 'http://localhost:8001', 'Sec-Fetch-Site': 'cross-site', 'Sec-Fetch-Mode': 'cors', 'Sec-Fetch-Dest': 'empty', 'Referer': 'http://localhost:8001/', 'Accept-Encoding': 'gzip, deflate, br, zstd', 'Accept-Language': 'fr,fr-FR;q=0.9,en;q=0.8,en-GB;q=0.7,en-US;q=0.6'}
+INFO 2026-04-24 15:55:53,004 views 7 127178720371456 📊 Request Data: {'username': 'marwa-artist', 'email': 'marwa@gmail.com', 'password': 'marwamimi12'}
+INFO 2026-04-24 15:55:53,005 views 7 127178720371456 📊 Request Content-Type: application/json
+INFO 2026-04-24 15:55:53,006 views 7 127178720371456 ✅ Serializer created successfully
+INFO 2026-04-24 15:55:53,018 views 7 127178720371456 ✅ Serializer validation passed
+INFO 2026-04-24 15:55:53,240 views 7 127178720371456 ✅ User created successfully: marwa-artist (ID: 34)
+INFO 2026-04-24 15:55:53,240 views 7 127178720371456 📊 User Email: marwa@gmail.com
+INFO 2026-04-24 15:55:53,249 views 7 127178720371456 ✅ Registration successful for user: marwa-artist
+INFO 2026-04-24 15:55:53,249 views 7 127178720371456 📊 Response Data Keys: ['id', 'username', 'email', 'avatar', 'bio', 'job_title', 'location', 'website', 'total_points', 'achievements', 'followers_count', 'following_count', 'arts_count']
+INFO 2026-04-24 15:55:53,250 views 7 127178720371456 ==================================================
+WARNING 2026-04-24 15:56:59,127 log 7 127178720371456 Not Found: /api/users/profile/marwa-artist/
+WARNING 2026-04-24 16:06:43,995 log 8 137666423051008 Bad Request: /api/users/login/
+WARNING 2026-04-24 16:07:16,040 log 8 137666423051008 Not Found: /api/users/profile/marwa-artist/
+WARNING 2026-04-24 16:07:20,111 log 8 137666423051008 Not Found: /api/users/profile/marwa-artist/
+WARNING 2026-04-24 16:07:20,931 log 8 137666423051008 Not Found: /api/users/profile/marwa-artist/
+WARNING 2026-04-24 16:07:44,706 log 8 137666423051008 Not Found: /api/users/profile/marwa-artist/
+WARNING 2026-04-24 16:17:48,288 log 8 136422862152448 Not Found: /api/users/profile/marwa-artist/
+WARNING 2026-04-24 16:17:51,864 log 8 136422862152448 Not Found: /api/users/profile/marwa-artist/
+WARNING 2026-04-24 16:20:24,768 log 8 136422862152448 Forbidden: /api/users/profile/32/
+WARNING 2026-04-24 16:20:49,741 log 8 136422862152448 Forbidden: /api/users/profile/
+INFO 2026-04-24 16:23:38,310 views 8 132766784127744 ==================================================
+INFO 2026-04-24 16:23:38,310 views 8 132766784127744 🔍 REGISTRATION REQUEST STARTED
+INFO 2026-04-24 16:23:38,311 views 8 132766784127744 📊 Request Method: POST
+INFO 2026-04-24 16:23:38,311 views 8 132766784127744 📊 Request Headers: {'Host': 'localhost', 'X-Real-Ip': '172.18.0.1', 'X-Forwarded-For': '172.18.0.1', 'Content-Length': '83', 'User-Agent': 'curl/8.18.0', 'Accept': '*/*', 'Content-Type': 'application/json'}
+INFO 2026-04-24 16:23:38,312 views 8 132766784127744 📊 Request Data: {'username': 'marwa-artist', 'email': 'marwa@artist.com', 'password': 'test123456'}
+INFO 2026-04-24 16:23:38,312 views 8 132766784127744 📊 Request Content-Type: application/json
+INFO 2026-04-24 16:23:38,312 views 8 132766784127744 ✅ Serializer created successfully
+ERROR 2026-04-24 16:23:38,334 views 8 132766784127744 ❌ Serializer validation failed: {'username': [ErrorDetail(string='A user with that username already exists.', code='unique')]}
+ERROR 2026-04-24 16:23:38,334 views 8 132766784127744 📊 Validation Errors: {'username': [ErrorDetail(string='A user with that username already exists.', code='unique')]}
+ERROR 2026-04-24 16:23:38,334 views 8 132766784127744 💥 REGISTRATION FAILED: {'username': [ErrorDetail(string='A user with that username already exists.', code='unique')]}
+ERROR 2026-04-24 16:23:38,335 views 8 132766784127744 📊 Exception Type: ValidationError
+ERROR 2026-04-24 16:23:38,335 views 8 132766784127744 📊 Exception Args: ({'username': [ErrorDetail(string='A user with that username already exists.', code='unique')]},)
+ERROR 2026-04-24 16:23:38,343 views 8 132766784127744 📊 Traceback: Traceback (most recent call last):
+  File "/app/accounts/views.py", line 122, in create
+    serializer.is_valid(raise_exception=True)
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/serializers.py", line 231, in is_valid
+    raise ValidationError(self.errors)
+rest_framework.exceptions.ValidationError: {'username': [ErrorDetail(string='A user with that username already exists.', code='unique')]}
+
+INFO 2026-04-24 16:23:38,344 views 8 132766784127744 ==================================================
+WARNING 2026-04-24 16:23:38,345 log 8 132766784127744 Bad Request: /api/users/register/
+ERROR 2026-04-24 16:23:56,435 log 8 132766784127744 Internal Server Error: /api/users/profile/username/nonexistent-user/
+Traceback (most recent call last):
+  File "/app/accounts/views.py", line 422, in get_object
+    user = User.objects.get(username=username)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 649, in get
+    raise self.model.DoesNotExist(
+accounts.models.User.DoesNotExist: User matching query does not exist.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/app/accounts/views.py", line 434, in get
+    return super().get(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/generics.py", line 212, in get
+    return self.retrieve(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/mixins.py", line 54, in retrieve
+    instance = self.get_object()
+               ^^^^^^^^^^^^^^^^^
+  File "/app/accounts/views.py", line 427, in get_object
+    raise NotFound(f"User '{username}' not found")
+          ^^^^^^^^
+NameError: name 'NotFound' is not defined
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/decorators/csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/accounts/views.py", line 435, in get
+    except NotFound as e:
+           ^^^^^^^^
+NameError: name 'NotFound' is not defined
+ERROR 2026-04-24 16:24:01,916 log 8 132766784127744 Internal Server Error: /api/users/profile/username/nonexistent-user/
+Traceback (most recent call last):
+  File "/app/accounts/views.py", line 422, in get_object
+    user = User.objects.get(username=username)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/manager.py", line 87, in manager_method
+    return getattr(self.get_queryset(), name)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/db/models/query.py", line 649, in get
+    raise self.model.DoesNotExist(
+accounts.models.User.DoesNotExist: User matching query does not exist.
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/app/accounts/views.py", line 434, in get
+    return super().get(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/generics.py", line 212, in get
+    return self.retrieve(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/mixins.py", line 54, in retrieve
+    instance = self.get_object()
+               ^^^^^^^^^^^^^^^^^
+  File "/app/accounts/views.py", line 427, in get_object
+    raise NotFound(f"User '{username}' not found")
+          ^^^^^^^^
+NameError: name 'NotFound' is not defined
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/decorators/csrf.py", line 65, in _view_wrapper
+    return view_func(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/django/views/generic/base.py", line 104, in view
+    return self.dispatch(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 509, in dispatch
+    response = self.handle_exception(exc)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 469, in handle_exception
+    self.raise_uncaught_exception(exc)
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 480, in raise_uncaught_exception
+    raise exc
+  File "/usr/local/lib/python3.11/site-packages/rest_framework/views.py", line 506, in dispatch
+    response = handler(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/app/accounts/views.py", line 435, in get
+    except NotFound as e:
+           ^^^^^^^^
+NameError: name 'NotFound' is not defined
+WARNING 2026-04-24 16:25:02,951 log 7 126660654736128 Not Found: /api/users/profile/username/nonexistent-user/
+WARNING 2026-04-24 16:26:09,409 log 7 126660654736128 Not Found: /api/users/profile/marwa-artist/
+WARNING 2026-04-24 16:42:05,549 log 7 126660654736128 Not Found: /api/users/profile/marwa-artist/
+WARNING 2026-04-24 16:42:09,551 log 7 126660654736128 Not Found: /api/users/profile/marwa-artist/
+WARNING 2026-04-24 16:42:10,413 log 7 126660654736128 Not Found: /api/users/profile/marwa-artist/
+WARNING 2026-04-24 16:43:02,903 log 7 126660654736128 Not Found: /api/users/profile/marwa-artist/
+WARNING 2026-04-24 16:46:53,479 log 7 126660654736128 Not Found: /api/users/profile/marwa-artist/
+WARNING 2026-04-24 16:50:38,047 log 6 132760568087296 Not Found: /api/users/profile/username/nonexistent-user/
+WARNING 2026-04-24 16:51:08,164 log 6 132760568087296 Not Found: /api/users/profile/marwa-artist/
+WARNING 2026-04-24 16:51:12,399 log 6 132760568087296 Not Found: /api/users/profile/marwa-artist/
+WARNING 2026-04-24 16:51:13,350 log 6 132760568087296 Not Found: /api/users/profile/marwa-artist/
+WARNING 2026-04-24 16:51:13,895 log 6 132760568087296 Not Found: /api/users/profile/marwa-artist/

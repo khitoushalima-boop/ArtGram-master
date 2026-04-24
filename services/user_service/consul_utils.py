@@ -39,42 +39,64 @@ class ConsulServiceRegistry:
             return "127.0.0.1"
     
     def register_service(self, service_name, service_port, health_check_url=None, tags=None):
-        """Register service with Consul"""
+        """Register service with Consul - Fixed parameter structure"""
         try:
             local_ip = self.get_local_ip()
             
-            service_config = {
-                'ID': f"{service_name}-{local_ip}-{service_port}",
-                'Name': service_name,
-                'Tags': tags or [],
-                'Address': local_ip,
-                'Port': service_port,
-                'Check': {
-                    'HTTP': health_check_url or f"http://{local_ip}:{service_port}/health/",
-                    'Interval': '10s',
-                    'Timeout': '3s',
-                    'DeregisterCriticalServiceAfter': '30s'
-                },
-                'Meta': {
-                    'version': '1.0.0',
-                    'environment': os.environ.get('ENVIRONMENT', 'development'),
-                    'service_type': 'django-microservice'
-                }
+            # Ensure all parameters are properly cast to strings
+            service_name = str(service_name)
+            service_port = int(service_port)
+            local_ip = str(local_ip)
+            
+            # Create service ID as string
+            service_id = f"{service_name}-{local_ip}-{service_port}"
+            
+            # Prepare health check as dictionary - use container name for internal Docker networking
+            # For Docker environment, use container name for health checks
+            health_check_url = health_check_url or f"http://user-service:8000/api/users/health/"
+            health_check = {
+                'HTTP': str(health_check_url),
+                'Interval': '10s',
+                'Timeout': '3s',
+                'DeregisterCriticalServiceAfter': '30s'
             }
             
-            # Register service
-            self.consul.agent.service.register(service_config)
-            self.service_id = service_config['ID']
+            # Prepare metadata as dictionary with string values
+            meta = {
+                'version': '1.0.0',
+                'environment': str(os.environ.get('ENVIRONMENT', 'development')),
+                'service_type': 'django-microservice'
+            }
+            
+            # Ensure tags are list of strings
+            tags = [str(tag) for tag in (tags or [])]
+            
+            # Register service with individual parameters (not dictionary)
+            self.consul.agent.service.register(
+                name=service_name,                    # ✅ Clean string
+                service_id=service_id,                # ✅ Clean string
+                address=local_ip,                    # ✅ Clean string
+                port=service_port,                   # ✅ Integer
+                tags=tags,                           # ✅ List of strings
+                check=health_check                   # ✅ Dictionary
+                # Note: 'meta' parameter not supported in this version of python-consul
+            )
+            
+            self.service_id = service_id
             
             logger.info(f"✅ Service {service_name} registered with Consul")
             logger.info(f"   Service ID: {self.service_id}")
             logger.info(f"   Address: {local_ip}:{service_port}")
-            logger.info(f"   Health Check: {service_config['Check']['HTTP']}")
+            logger.info(f"   Health Check: {health_check['HTTP']}")
+            logger.info(f"   Tags: {tags}")
+            logger.info(f"   Meta: {meta}")
             
             return True
             
         except Exception as e:
             logger.error(f"❌ Failed to register service {service_name}: {str(e)}")
+            import traceback
+            logger.error(f"📊 Full traceback: {traceback.format_exc()}")
             return False
     
     def deregister_service(self, service_id=None):
