@@ -535,12 +535,18 @@
           
           if (response.ok) {
             console.log('✅ Login successful:', response.data);
+            console.log('🔑 Access Token:', response.data.access ? 'Present' : 'Missing');
+            console.log('🔑 Refresh Token:', response.data.refresh ? 'Present' : 'Missing');
+            console.log('👤 User Data:', response.data.user);
             
             // Store authentication data with correct keys
             localStorage.setItem('access_token', response.data.access);
             localStorage.setItem('refresh_token', response.data.refresh);
             localStorage.setItem('user', JSON.stringify(response.data.user));
             
+            // Verify storage
+            console.log('💾 Stored Token Check:', localStorage.getItem('access_token') ? 'Success' : 'Failed');
+            console.log('💾 Stored User Check:', localStorage.getItem('user') ? 'Success' : 'Failed');
             console.log('🔑 JWT Token stored:', response.data.access ? 'Success' : 'Failed');
             
             showSuccess('Login successful! Redirecting...');

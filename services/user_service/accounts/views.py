@@ -1,4 +1,4 @@
-from rest_framework import viewsets, generics, permissions, status, serializers
+from rest_framework import viewsets, generics, permissions, status, serializers, views
 from rest_framework.decorators import api_view, permission_classes, action
 from rest_framework.response import Response
 from rest_framework.exceptions import NotFound
@@ -159,6 +159,141 @@ class RegisterViewSet(viewsets.GenericViewSet):
 class LoginView(TokenObtainPairView):
     serializer_class = CustomTokenObtainPairSerializer
     permission_classes = [permissions.AllowAny]
+
+
+class DjangoLoginView(views.APIView):
+    """
+    Django session-based login view
+    """
+    permission_classes = [permissions.AllowAny]
+    
+    def post(self, request):
+        from django.contrib.auth import authenticate, login
+        from django.views.decorators.csrf import csrf_exempt
+        from django.utils.decorators import method_decorator
+        
+        username = request.data.get('username')
+        password = request.data.get('password')
+        
+        if not username or not password:
+            return Response({
+                'error': 'Username and password are required'
+            }, status=status.HTTP_400_BAD_REQUEST)
+        
+        user = authenticate(username=username, password=password)
+        
+        if user is not None:
+            login(request, user)
+            
+            # Return user data
+            from .serializers import UserProfileSerializer
+            serializer = UserProfileSerializer(user, context={'request': request})
+            
+            return Response({
+                'success': True,
+                'message': 'Login successful',
+                'user': serializer.data
+            }, status=status.HTTP_200_OK)
+        else:
+            return Response({
+                'error': 'Invalid credentials'
+            }, status=status.HTTP_401_UNAUTHORIZED)
+
+
+class DjangoLogoutView(views.APIView):
+    """
+    Django session-based logout view
+    """
+    permission_classes = [permissions.IsAuthenticated]
+    
+    def post(self, request):
+        from django.contrib.auth import logout
+        
+        logout(request)
+        
+        return Response({
+            'success': True,
+            'message': 'Logout successful'
+        }, status=status.HTTP_200_OK)
+
+
+class DjangoSessionView(views.APIView):
+    """
+    Check if user is authenticated via session or JWT token
+    """
+    permission_classes = [permissions.AllowAny]
+    
+    def get(self, request):
+        # First check if user is authenticated via session
+        if request.user.is_authenticated:
+            from .serializers import UserProfileSerializer
+            serializer = UserProfileSerializer(request.user, context={'request': request})
+            
+            return Response({
+                'authenticated': True,
+                'user': serializer.data
+            }, status=status.HTTP_200_OK)
+        
+        # Then check if user is authenticated via JWT token
+        auth_header = request.headers.get('Authorization', '')
+        if auth_header.startswith('Bearer '):
+            from rest_framework_simplejwt.authentication import JWTAuthentication
+            from rest_framework_simplejwt.exceptions import InvalidToken
+            
+            try:
+                jwt_auth = JWTAuthentication()
+                validated_token = jwt_auth.get_validated_token(auth_header[7:])  # Remove 'Bearer '
+                user = jwt_auth.get_user(validated_token)
+                
+                if user and user.is_authenticated:
+                    from .serializers import UserProfileSerializer
+                    serializer = UserProfileSerializer(user, context={'request': request})
+                    
+                    return Response({
+                        'authenticated': True,
+                        'user': serializer.data
+                    }, status=status.HTTP_200_OK)
+            except (InvalidToken, Exception) as e:
+                pass  # Token is invalid, continue to return False
+        
+        return Response({
+            'authenticated': False,
+            'user': None
+        }, status=status.HTTP_200_OK)
+
+
+from django.shortcuts import render, redirect
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib import messages
+from django.urls import reverse
+
+def django_template_login(request):
+    """
+    Django template-based login view
+    """
+    if request.method == 'POST':
+        form = AuthenticationForm(request, data=request.POST)
+        if form.is_valid():
+            from django.contrib.auth import login
+            user = form.get_user()
+            login(request, user)
+            messages.success(request, 'Login successful!')
+            return redirect('login_success')
+        else:
+            messages.error(request, 'Invalid username or password.')
+    else:
+        form = AuthenticationForm()
+    
+    return render(request, 'simple_login.html', {'form': form})
+
+def login_success(request):
+    """
+    Login success page
+    """
+    if request.user.is_authenticated:
+        return render(request, 'login_success.html')
+    else:
+        return redirect('django_template_login')
 
 
 class UserViewSet(viewsets.ReadOnlyModelViewSet):
@@ -524,5 +659,143 @@ class ProfileUpdateView(generics.RetrieveUpdateAPIView):
                 'error': 'Failed to update profile.',
                 'details': str(e)
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class FollowUserView(generics.GenericAPIView):
+    """
+    API endpoint for following a user.
+    Only authenticated users can follow other users.
+    """
+    permission_classes = [permissions.IsAuthenticated]
+    
+    def post(self, request, user_id):
+        """
+        Follow a user by user_id.
+        """
+        try:
+            # Get the user to follow
+            user_to_follow = User.objects.get(id=user_id)
+            
+            # Prevent self-following
+            if request.user == user_to_follow:
+                return Response(
+                    {'error': 'You cannot follow yourself.'},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+            
+            # Check if already following
+            if Follow.objects.filter(follower=request.user, following=user_to_follow).exists():
+                return Response(
+                    {'error': 'You are already following this user.'},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+            
+            # Create follow relationship
+            Follow.objects.create(follower=request.user, following=user_to_follow)
+            
+            return Response({
+                'message': f'You are now following {user_to_follow.username}.',
+                'following': True
+            }, status=status.HTTP_201_CREATED)
+            
+        except User.DoesNotExist:
+            return Response(
+                {'error': 'User not found.'},
+                status=status.HTTP_404_NOT_FOUND
+            )
+        except Exception as e:
+            return Response(
+                {'error': 'Failed to follow user.', 'details': str(e)},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+
+class UnfollowUserView(generics.GenericAPIView):
+    """
+    API endpoint for unfollowing a user.
+    Only authenticated users can unfollow other users.
+    """
+    permission_classes = [permissions.IsAuthenticated]
+    
+    def post(self, request, user_id):
+        """
+        Unfollow a user by user_id.
+        """
+        try:
+            # Get the user to unfollow
+            user_to_unfollow = User.objects.get(id=user_id)
+            
+            # Find the follow relationship
+            follow_relationship = Follow.objects.filter(
+                follower=request.user, 
+                following=user_to_unfollow
+            ).first()
+            
+            if not follow_relationship:
+                return Response(
+                    {'error': 'You are not following this user.'},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
+            
+            # Delete follow relationship
+            follow_relationship.delete()
+            
+            return Response({
+                'message': f'You have unfollowed {user_to_unfollow.username}.',
+                'following': False
+            }, status=status.HTTP_200_OK)
+            
+        except User.DoesNotExist:
+            return Response(
+                {'error': 'User not found.'},
+                status=status.HTTP_404_NOT_FOUND
+            )
+        except Exception as e:
+            return Response(
+                {'error': 'Failed to unfollow user.', 'details': str(e)},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
+
+
+class FollowersListView(generics.ListAPIView):
+    """
+    API endpoint for listing a user's followers.
+    """
+    serializer_class = UserSerializer
+    permission_classes = [permissions.AllowAny]
+    
+    def get_queryset(self):
+        """
+        Get followers for a specific user.
+        """
+        user_id = self.kwargs.get('user_id')
+        try:
+            user = User.objects.get(id=user_id)
+            # Get users who follow this user
+            followers_ids = Follow.objects.filter(following=user).values_list('follower', flat=True)
+            return User.objects.filter(id__in=followers_ids)
+        except User.DoesNotExist:
+            return User.objects.none()
+
+
+class FollowingListView(generics.ListAPIView):
+    """
+    API endpoint for listing users that a user follows.
+    """
+    serializer_class = UserSerializer
+    permission_classes = [permissions.AllowAny]
+    
+    def get_queryset(self):
+        """
+        Get users that this user follows.
+        """
+        user_id = self.kwargs.get('user_id')
+        try:
+            user = User.objects.get(id=user_id)
+            # Get users that this user follows
+            following_ids = Follow.objects.filter(follower=user).values_list('following', flat=True)
+            return User.objects.filter(id__in=following_ids)
+        except User.DoesNotExist:
+            return User.objects.none()
 
 

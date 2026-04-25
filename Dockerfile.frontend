@@ -4,6 +4,9 @@ FROM nginx:alpine
 # Copy all templates to the default Nginx public folder
 COPY ./templates /usr/share/nginx/html
 
+# Copy custom nginx configuration
+COPY ./services/gateway/frontend.conf /etc/nginx/conf.d/default.conf
+
 # Copy any static files if they exist
 # COPY ./static /usr/share/nginx/html/static
 

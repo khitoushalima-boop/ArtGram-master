@@ -480,17 +480,27 @@
         const USER_API = '/api/gateway/users/';
         const ARTWORKS_API = '/api/gateway/artworks/';
 
-        // Enhanced fetch function with Django session support
+        // Get JWT token
+        function getJWTToken() {
+            return localStorage.getItem('access_token') || localStorage.getItem('token');
+        }
+
+        // Enhanced fetch function with JWT support
         async function authFetch(url, options = {}) {
+            const jwtToken = getJWTToken();
+            
             const defaultOptions = {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
                     'X-Requested-With': 'XMLHttpRequest',
                     'Accept': 'application/json'
-                },
-                credentials: 'include' // Important for Django sessions
+                }
             };
+            
+            if (jwtToken) {
+                defaultOptions.headers['Authorization'] = `Bearer ${jwtToken}`;
+            }
             
             const fetchOptions = { ...defaultOptions, ...options };
             
@@ -498,12 +508,14 @@
                 const response = await fetch(url, fetchOptions);
                 
                 if (response.status === 401) {
-                    window.location.href = 'login_django.html';
+                    localStorage.removeItem('access_token');
+                    localStorage.removeItem('refresh_token');
+                    localStorage.removeItem('user');
+                    window.location.href = 'log.html';
                     return;
                 }
                 
                 return response;
-                
             } catch (error) {
                 console.error('Auth fetch error:', error);
                 throw error;
@@ -722,20 +734,12 @@
             }
         }
 
-        // Django logout
-        async function logout() {
-            try {
-                const response = await authFetch(`${USER_API}django-logout/`, {
-                    method: 'POST'
-                });
-                
-                if (response.ok) {
-                    window.location.href = 'index.html';
-                }
-            } catch (error) {
-                console.error('Logout failed:', error);
-                window.location.href = 'index.html';
-            }
+        // Logout
+        function logout() {
+            localStorage.removeItem('access_token');
+            localStorage.removeItem('refresh_token');
+            localStorage.removeItem('user');
+            window.location.href = 'index.html';
         }
 
         // Form submissions

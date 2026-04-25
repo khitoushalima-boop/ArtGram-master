@@ -63,8 +63,16 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         data["user"] = {
             "id": self.user.id,
             "username": self.user.username,
+            "display_name": self.user.display_name,
             "email": self.user.email,
+            "bio": self.user.bio,
             "avatar": self.user.avatar.url if self.user.avatar else None,
+            "avatar_thumbnail": self.user.avatar_thumbnail.url if self.user.avatar_thumbnail else None,
+            "job_title": self.user.job_title,
+            "location": self.user.location,
+            "website": self.user.website,
+            "followers_count": self.user.followers.count(),
+            "following_count": self.user.following.count(),
         }
         return data
 
@@ -110,11 +118,12 @@ class UserProfileSerializer(serializers.ModelSerializer):
     followers_count = serializers.SerializerMethodField()
     following_count = serializers.SerializerMethodField()
     arts_count = serializers.SerializerMethodField()
+    is_following = serializers.SerializerMethodField()
     
     class Meta:
         model = User
-        fields = ("id", "username", "email", "avatar", "bio", "job_title", "location", "website", 
-                 "total_points", "achievements", "followers_count", "following_count", "arts_count")
+        fields = ("id", "username", "display_name", "email", "avatar", "bio", "job_title", "location", "website", 
+                 "total_points", "achievements", "followers_count", "following_count", "arts_count", "is_following")
         read_only_fields = ("id",)
     
     def get_total_points(self, obj):
@@ -132,6 +141,13 @@ class UserProfileSerializer(serializers.ModelSerializer):
         # This would typically fetch from artwork service
         # For now, return a placeholder
         return 0
+    
+    def get_is_following(self, obj):
+        """Check if current user is following this profile"""
+        request = self.context.get('request')
+        if request and request.user.is_authenticated and request.user != obj:
+            return Follow.objects.filter(follower=request.user, following=obj).exists()
+        return False
 
 
 class ProfileUpdateSerializer(serializers.ModelSerializer):
@@ -149,14 +165,16 @@ class ProfileUpdateSerializer(serializers.ModelSerializer):
         'Fine Artist', 'Digital Painter', 'Mixed Media Artist'
     ]
     
-    first_name = serializers.CharField(required=False, allow_blank=True, max_length=50)
+    display_name = serializers.CharField(required=False, allow_blank=True, max_length=100)
     bio = serializers.CharField(required=False, allow_blank=True, max_length=500)
     job_title = serializers.CharField(required=False, allow_blank=True, max_length=100)
+    location = serializers.CharField(required=False, allow_blank=True, max_length=100)
+    website = serializers.URLField(required=False, allow_blank=True)
     avatar = serializers.ImageField(required=False, allow_null=True)
     
     class Meta:
         model = User
-        fields = ['first_name', 'bio', 'job_title', 'avatar']
+        fields = ['display_name', 'bio', 'job_title', 'location', 'website', 'avatar']
     
     def validate_job_title(self, value):
         """Validate job title against predefined list or allow custom valid string."""
@@ -180,14 +198,14 @@ class ProfileUpdateSerializer(serializers.ModelSerializer):
             f"Invalid job title. Choose from: {', '.join(self.VALID_JOB_TITLES[:5])}..."
         )
     
-    def validate_first_name(self, value):
-        """Validate full name field."""
+    def validate_display_name(self, value):
+        """Validate display name field."""
         if value:
             value = value.strip()
             if len(value) < 2:
-                raise serializers.ValidationError("Full name must be at least 2 characters long.")
-            if len(value) > 50:
-                raise serializers.ValidationError("Full name cannot exceed 50 characters.")
+                raise serializers.ValidationError("Display name must be at least 2 characters long.")
+            if len(value) > 100:
+                raise serializers.ValidationError("Display name cannot exceed 100 characters.")
         return value
     
     def validate_bio(self, value):

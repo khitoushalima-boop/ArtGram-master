@@ -4,6 +4,7 @@ from django.utils import timezone
 
 class User(AbstractUser):
     email = models.EmailField(unique=True)
+    display_name = models.CharField(max_length=100, blank=True, null=True, help_text="Display name for profile (different from username)")
     bio = models.TextField(blank=True, null=True)
     avatar = models.ImageField(upload_to='avatars/', blank=True, null=True, help_text="High-resolution avatar image")
     avatar_thumbnail = models.ImageField(upload_to='avatars/thumbnails/', blank=True, null=True, help_text="Processed thumbnail for profile display")
