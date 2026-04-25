@@ -130,3 +130,32 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+# AUTHENTICATION & SESSION CONFIGURATION (Django 4.0+)
+# ═══════════════════════════════════════════════════════════════════════════
+
+# Session Configuration ✅
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'  # Store sessions in database
+SESSION_COOKIE_AGE = 1209600  # 2 weeks (in seconds)
+SESSION_COOKIE_SECURE = False  # Set to True in production with HTTPS
+SESSION_COOKIE_HTTPONLY = True  # JavaScript cannot access session cookie
+SESSION_COOKIE_SAMESITE = 'Lax'  # CSRF protection
+SESSION_SAVE_EVERY_REQUEST = True  # Save session on every request to update expiry
+
+# CSRF Configuration ✅
+CSRF_COOKIE_AGE = 31449600  # One year
+CSRF_COOKIE_HTTPONLY = False  # Frontend CAN read CSRF token from cookies
+CSRF_COOKIE_SAMESITE = 'Lax'  # CSRF protection
+CSRF_TRUSTED_ORIGINS = []  # Add your domain in production
+
+# Authentication URLs ✅
+LOGIN_URL = 'users:auth'
+LOGIN_REDIRECT_URL = 'artworks:home'
+LOGOUT_REDIRECT_URL = 'artworks:home'
+
+# Custom authentication settings
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',  # Default Django backend
+]
